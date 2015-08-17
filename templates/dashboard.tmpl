@@ -77,8 +77,9 @@
 				<li><a href="#">Dashboard</a></li>
 			</ul>
 
-			<div class="row-fluid">
 			{{range .}}
+			<div class="row-fluid">
+				{{range .}}
 				<div class="box black span4" onTablet="span6" onDesktop="span4">
 					<div class="box-header">
 						<h2><i class="halflings-icon white list"></i> {{.Name}}</h2>
@@ -88,7 +89,7 @@
 							{{range .Releases}}
 							<li>
 								<a href="#">
-									<i class="icon-minus blue"></i>
+									<i class="{{.DisplayClass}}"></i>
 									<strong>{{.Version}}</strong>
 									{{.Name}}
 								</a>
@@ -97,7 +98,7 @@
 							{{range .Stemcells}}
 							<li>
 								<a href="#">
-									<i class="icon-minus blue"></i>
+									<i class="{{.DisplayClass}}"></i>
 									<strong>{{.Version}}</strong>
 									{{.Name}}
 								</a>
@@ -107,240 +108,9 @@
 					</div>
 				</div><!--/span-->
 
+				{{end}}
+			</div>
 			{{end}}
-			</div>
-
-
-      <!-- try-anything -->
-			<div class="row-fluid">
-
-				<div class="box black span4" onTablet="span6" onDesktop="span4">
-					<div class="box-header">
-						<h2><i class="halflings-icon white list"></i> try-anything / bosh-lite</h2>
-						<div class="box-icon">
-							<a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
-							<a href="#" class="btn-close"><i class="halflings-icon white remove"></i></a>
-						</div>
-					</div>
-					<div class="box-content">
-						<ul class="dashboard-list metro">
-							<li>
-								<a href="#">
-									<i class="icon-arrow-up green"></i>
-									<strong>211</strong>
-									Cloud Foundry
-								</a>
-							</li>
-						  <li>
-							<a href="#">
-							  <i class="icon-arrow-down red"></i>
-							  <strong>1</strong>
-							  Sensu
-							</a>
-						  </li>
-						  <li>
-							<a href="#">
-							  <i class="icon-minus blue"></i>
-							  <strong>2776</strong>
-							  Stemcell
-							</a>
-						  </li>
-						</ul>
-					</div>
-				</div><!--/span-->
-
-			</div>
-
-      <!-- legacy VPC -->
-			<div class="row-fluid">
-
-				<div class="box black span4" onTablet="span6" onDesktop="span4">
-					<div class="box-header">
-						<h2><i class="halflings-icon white list"></i> legacy / sandbox / aws</h2>
-						<div class="box-icon">
-							<a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
-							<a href="#" class="btn-close"><i class="halflings-icon white remove"></i></a>
-						</div>
-					</div>
-					<div class="box-content">
-						<ul class="dashboard-list metro">
-							<li>
-								<a href="#">
-									<i class="icon-minus blue"></i>
-									<strong>211</strong>
-									Cloud Foundry
-								</a>
-							</li>
-						  <li>
-							<a href="#">
-							  <i class="icon-minus blue"></i>
-							  <strong>1</strong>
-							  Sensu
-							</a>
-						  </li>
-						  <li>
-							<a href="#">
-							  <i class="icon-arrow-up green"></i>
-							  <strong>3033</strong>
-							  Stemcell
-							</a>
-						  </li>
-						</ul>
-					</div>
-				</div><!--/span-->
-
-				<div class="box black span4" onTablet="span6" onDesktop="span4">
-					<div class="box-header">
-						<h2><i class="halflings-icon white list"></i> legacy / dev / aws</h2>
-						<div class="box-icon">
-							<a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
-							<a href="#" class="btn-close"><i class="halflings-icon white remove"></i></a>
-						</div>
-					</div>
-					<div class="box-content">
-						<ul class="dashboard-list metro">
-							<li>
-								<a href="#">
-									<i class="icon-minus blue"></i>
-									<strong>211</strong>
-									Cloud Foundry
-								</a>
-							</li>
-						  <li>
-							<a href="#">
-							  <i class="icon-minus blue"></i>
-							  <strong>1</strong>
-							  Sensu
-							</a>
-						  </li>
-						  <li>
-							<a href="#">
-							  <i class="icon-minus blue"></i>
-							  <strong>3033</strong>
-							  Stemcell
-							</a>
-						  </li>
-						</ul>
-					</div>
-				</div><!--/span-->
-
-				<div class="box black span4" onTablet="span6" onDesktop="span4">
-					<div class="box-header">
-						<h2><i class="halflings-icon white list"></i> legacy / prod / aws</h2>
-						<div class="box-icon">
-							<a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
-							<a href="#" class="btn-close"><i class="halflings-icon white remove"></i></a>
-						</div>
-					</div>
-					<div class="box-content">
-						<ul class="dashboard-list metro">
-							<li>
-								<a href="#">
-									<i class="icon-arrow-down red"></i>
-									<strong>205</strong>
-									Cloud Foundry
-								</a>
-							</li>
-						  <li>
-							<a href="#">
-							  <i class="icon-minus blue"></i>
-							  <strong>1</strong>
-							  Sensu
-							</a>
-						  </li>
-						  <li>
-							<a href="#">
-							  <i class="icon-arrow-down red"></i>
-							  <strong>3000</strong>
-							  Stemcell
-							</a>
-						  </li>
-						</ul>
-					</div>
-				</div><!--/span-->
-
-			</div>
-      <!-- legacy VPC -->
-			<div class="row-fluid">
-
-				<div class="box black span4" onTablet="span6" onDesktop="span4">
-					<div class="box-header">
-						<h2><i class="halflings-icon white list"></i> predix / sandbox / aws</h2>
-						<div class="box-icon">
-							<a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
-							<a href="#" class="btn-close"><i class="halflings-icon white remove"></i></a>
-						</div>
-					</div>
-					<div class="box-content">
-						<ul class="dashboard-list metro">
-							<li>
-								<a href="#">
-									<i class="icon-minus blue"></i>
-									<strong>211</strong>
-									Cloud Foundry
-								</a>
-							</li>
-						  <li>
-							<a href="#">
-							  <i class="icon-minus blue"></i>
-							  <strong>1</strong>
-							  Sensu
-							</a>
-						  </li>
-						  <li>
-							<a href="#">
-							  <i class="icon-arrow-up green"></i>
-							  <strong>3033</strong>
-							  Stemcell
-							</a>
-						  </li>
-						</ul>
-					</div>
-				</div><!--/span-->
-
-			</div>
-
-      <!-- legacy VPC -->
-			<div class="row-fluid">
-
-				<div class="box black span4" onTablet="span6" onDesktop="span4">
-					<div class="box-header">
-						<h2><i class="halflings-icon white list"></i> ashburn / sandbox / aws</h2>
-						<div class="box-icon">
-							<a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
-							<a href="#" class="btn-close"><i class="halflings-icon white remove"></i></a>
-						</div>
-					</div>
-					<div class="box-content">
-						<ul class="dashboard-list metro">
-							<li>
-								<a href="#">
-									<i class="icon-minus blue"></i>
-									<strong>211</strong>
-									Cloud Foundry
-								</a>
-							</li>
-						  <li>
-							<a href="#">
-							  <i class="icon-minus blue"></i>
-							  <strong>1</strong>
-							  Sensu
-							</a>
-						  </li>
-						  <li>
-							<a href="#">
-							  <i class="icon-arrow-up green"></i>
-							  <strong>3033</strong>
-							  Stemcell
-							</a>
-						  </li>
-						</ul>
-					</div>
-				</div><!--/span-->
-
-      </div>
-
-	</div><!--/.fluid-container-->
 
 			<!-- end: Content -->
 		</div><!--/#content.span10-->
