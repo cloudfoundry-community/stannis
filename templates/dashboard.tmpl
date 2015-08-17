@@ -77,6 +77,39 @@
 				<li><a href="#">Dashboard</a></li>
 			</ul>
 
+			<div class="row-fluid">
+			{{range .}}
+				<div class="box black span4" onTablet="span6" onDesktop="span4">
+					<div class="box-header">
+						<h2><i class="halflings-icon white list"></i> {{.Name}}</h2>
+					</div>
+					<div class="box-content">
+						<ul class="dashboard-list metro">
+							{{range .Releases}}
+							<li>
+								<a href="#">
+									<i class="icon-minus blue"></i>
+									<strong>{{.Version}}</strong>
+									{{.Name}}
+								</a>
+							</li>
+							{{end}}
+							{{range .Stemcells}}
+							<li>
+								<a href="#">
+									<i class="icon-minus blue"></i>
+									<strong>{{.Version}}</strong>
+									{{.Name}}
+								</a>
+							</li>
+							{{end}}
+						</ul>
+					</div>
+				</div><!--/span-->
+
+			{{end}}
+			</div>
+
 
       <!-- try-anything -->
 			<div class="row-fluid">
