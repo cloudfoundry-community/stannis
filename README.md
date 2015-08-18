@@ -11,6 +11,8 @@ Once you have multiple BOSH, multiple environments, multiple data centers it can
 
 This dashboard makes it much easier to visualize the versions of software running across your BOSH systems.
 
+This can make visualizing a pipeline of deployments easier.
+
 ### Uploading latest data
 
 Manually, you could import the latest data from each BOSH:
@@ -25,3 +27,8 @@ You could programmatically extract the deployments from each BOSH (where the app
 deployments=$(curl -ks -u admin:admin https://10.20.30.40:25555/deployments)
 curl -X POST http://localhost:3000/bosh -d "{\"uuid\": \"the-uuid\", \"deployments\": $deployments}"
 ```
+
+Thanks
+------
+
+-	https://github.com/jiji262/Bootstrap_Metro_Dashboard was the theme used
