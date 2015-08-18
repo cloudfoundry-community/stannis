@@ -13,7 +13,19 @@ This dashboard makes it much easier to visualize the versions of software runnin
 
 This can make visualizing a pipeline of deployments easier.
 
-### Uploading latest data
+Running dashboard
+-----------------
+
+Create a YAML configuration file to describe the pipelines of deployments. See `config/config.example.yml` for the schema and examples.
+
+```
+go run main.go -pipelines config.yml
+```
+
+Upload deployment data from BOSHes
+----------------------------------
+
+### Manually upload data
 
 Manually, you could import the latest data from each BOSH:
 

@@ -1,8 +1,11 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"log"
 
+	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/config"
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/data"
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/rendertemplates"
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/upload"
@@ -18,6 +21,7 @@ func init() {
 }
 
 func dashboard(r render.Render) {
+	// deployments := rendertemplates.PrepareDeployments(boshDeployments)
 	deployments := rendertemplates.ExampleData()
 	r.HTML(200, "dashboard", deployments)
 }
@@ -28,6 +32,16 @@ func updateLatestDeployments(fromBOSH upload.UploadedFromBOSH) string {
 }
 
 func main() {
+	pipelinesConfig := flag.String("pipelines", "config.yml", "configuration of pipelines for dashboards")
+	flag.Parse()
+
+	// TODO: if pipelines file missing/corrupt then default to no pipelines; so app "just works"
+
+	config, err := config.LoadConfigFromYAMLFile(*pipelinesConfig)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(config)
 	m := martini.Classic()
 	m.Use(render.Renderer())
 	m.Get("/", dashboard)

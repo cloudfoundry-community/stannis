@@ -1,0 +1,35 @@
+---
+pipelines:
+- name: Cloud Foundry
+  tag: cf
+  filter:
+    using_bosh_releases: [cf]
+- name: RDPG
+  tag: rdpg
+  filter:
+    using_bosh_releases: [rdpg]
+- name: Logstash Service
+  tag: logstash-service
+  filter:
+    using_bosh_releases: [docker, logstash-docker]
+tiers:
+  - name: try-anything
+    columns:
+      - name: bosh-lite
+        bosh_uuid: uuid-some-bosh-lite
+  - name: internal-datacenter
+    columns:
+      - name: sandbox
+        bosh_uuid: uuid-vsphere-bosh-sandbox
+      - name: preprod
+        bosh_uuid: uuid-vsphere-bosh-preprod
+      - name: production
+        bosh_uuid: uuid-vsphere-bosh-production
+  - name: aws-us-east-1
+    columns:
+      - name: sandbox
+        bosh_uuid: uuid-aws-bosh-sandbox
+      - name: preprod
+        bosh_uuid: uuid-aws-bosh-preprod
+      - name: production
+        bosh_uuid: uuid-aws-bosh-production

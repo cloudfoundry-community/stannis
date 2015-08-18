@@ -1,5 +1,10 @@
 package rendertemplates
 
+import (
+	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/data"
+	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/upload"
+)
+
 // PipelinedDeployments is a collection of deployments in the Director by tiers/pipelines
 type PipelinedDeployments []*Deployments
 
@@ -21,12 +26,26 @@ type NameVersion struct {
 	DisplayClass string
 }
 
+// PrepareDeployments converts data into structures used by dashboard template
+func PrepareDeployments(data data.DeploymentsPerBOSH) *PipelinedDeployments {
+	pipelines := &PipelinedDeployments{}
+	// TODO: structure the output based on pipeline configuration
+	for _, boshDeployments := range data {
+		pipelines.addBOSHDeployments(boshDeployments)
+	}
+	return pipelines
+}
+
+func (pipelines PipelinedDeployments) addBOSHDeployments(data upload.UploadedFromBOSH) {
+	// deployments := &Deployments{}
+}
+
 // ExampleData returns some example data
 func ExampleData() *PipelinedDeployments {
 	return &PipelinedDeployments{
 		&Deployments{
 			&Deployment{
-				Name: "try-anything / bosh-lite",
+				Name: "try-anything / bosh-lite - cf-try-anything",
 				Releases: []NameVersion{
 					NameVersion{Name: "cf", Version: "214", DisplayClass: "icon-arrow-up green"},
 					NameVersion{Name: "cf-sensu-client", Version: "1", DisplayClass: "icon-minus blue"},
@@ -38,7 +57,7 @@ func ExampleData() *PipelinedDeployments {
 		},
 		&Deployments{
 			&Deployment{
-				Name: "legacy / sandbox / aws",
+				Name: "legacy / sandbox / aws - cf-sandbox-r5",
 				Releases: []NameVersion{
 					NameVersion{Name: "cf", Version: "211", DisplayClass: "icon-arrow-down red"},
 					NameVersion{Name: "cf-sensu-client", Version: "1", DisplayClass: "icon-minus blue"},
@@ -48,7 +67,7 @@ func ExampleData() *PipelinedDeployments {
 				},
 			},
 			&Deployment{
-				Name: "legacy / dev / aws",
+				Name: "legacy / dev / aws - cf-devprod-r2",
 				Releases: []NameVersion{
 					NameVersion{Name: "cf", Version: "211", DisplayClass: "icon-minus blue"},
 					NameVersion{Name: "cf-sensu-client", Version: "1", DisplayClass: "icon-minus blue"},
@@ -58,7 +77,7 @@ func ExampleData() *PipelinedDeployments {
 				},
 			},
 			&Deployment{
-				Name: "legacy / prod / aws",
+				Name: "legacy / prod / aws - prod-cloudfoundry",
 				Releases: []NameVersion{
 					NameVersion{Name: "cf", Version: "205", DisplayClass: "icon-arrow-down red"},
 					NameVersion{Name: "cf-sensu-client", Version: "1", DisplayClass: "icon-minus blue"},
