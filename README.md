@@ -31,4 +31,5 @@ curl -X POST http://localhost:3000/bosh -d "{\"uuid\": \"the-uuid\", \"deploymen
 Thanks
 ------
 
+-	Many staff at [Stark & Wayne](https://starkandwayne.com) who've been working on pipelining BOSH deployments for our clients; which led to the problem being solved "what's actually running everywhere?"
 -	https://github.com/jiji262/Bootstrap_Metro_Dashboard was the theme used
