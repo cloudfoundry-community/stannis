@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/data"
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/rendertemplates"
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/upload"
 	"github.com/codegangsta/martini-contrib/binding"
@@ -10,13 +11,20 @@ import (
 	"github.com/martini-contrib/render"
 )
 
+var boshDeployments data.DeploymentsPerBOSH
+
+func init() {
+	boshDeployments = data.NewDeploymentsPerBOSH()
+}
+
 func dashboard(r render.Render) {
 	deployments := rendertemplates.ExampleData()
 	r.HTML(200, "dashboard", deployments)
 }
 
 func updateLatestDeployments(fromBOSH upload.UploadedFromBOSH) string {
-	return fmt.Sprintf("%v\n", fromBOSH)
+	boshDeployments[fromBOSH.UUID] = fromBOSH
+	return fmt.Sprintf("%v\n", boshDeployments)
 }
 
 func main() {
