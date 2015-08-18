@@ -3,6 +3,8 @@ Dashboard for BOSH deployments
 
 Once you have multiple BOSH, multiple environments, multiple data centers it can quickly become difficult to visualise "what is running? where is it running?"
 
+![deployments](http://cl.ly/image/1d0F153a271D/Deployments.png)
+
 "Is the same version of Cloud Foundry running in all data centers?"
 
 "Is production Logsearch running the same version as staging Logsearch?"
