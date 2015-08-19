@@ -41,6 +41,13 @@ func updateLatestDeployments(fromBOSH upload.UploadedFromBOSH) string {
 }
 
 func runAgent(c *cli.Context) {
+	configPath := c.String("config")
+	var err error
+	agentConfig, err := config.LoadAgentConfigFromYAMLFile(configPath)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(agentConfig)
 
 }
 
@@ -73,7 +80,7 @@ func main() {
 				cli.StringFlag{
 					Name:  "config",
 					Value: "config.yml",
-					Usage: "pipelines configuration",
+					Usage: "agent configuration",
 				},
 			},
 			Action: runAgent,

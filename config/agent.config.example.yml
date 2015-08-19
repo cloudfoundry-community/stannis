@@ -1,0 +1,8 @@
+---
+bosh_target: https://192.68.0.4
+bosh_username: admin
+bosh_password: admin
+
+webserver_target: https://localhost:3000
+webserver_username: ""
+webserver_password: ""
