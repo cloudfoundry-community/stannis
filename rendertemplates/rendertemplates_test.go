@@ -11,26 +11,27 @@ import (
 
 var _ = Describe("Prepare data for templates", func() {
 	var (
-		expectedDeployments *PipelinedDeployments
-		db                  data.DeploymentsPerBOSH
-		renderdata          *RenderData
+		pipelineConfig *config.PipelinesConfig
+		expectedTiers  *Tiers
+		db             data.DeploymentsPerBOSH
+		renderdata     *RenderData
 	)
 	BeforeEach(func() {
-		expectedDeployments = TestScenarioData()
+		expectedTiers = TestScenarioData()
 		db = data.NewDeploymentsPerBOSH()
 
 		db.LoadFixtureData("fixtures/deployments-uuid-some-bosh-lite.json")
 		db.LoadFixtureData("fixtures/deployments-uuid-aws-bosh-production.json")
 		db.LoadFixtureData("fixtures/deployments-uuid-vsphere-bosh-sandbox.json")
+
+		var err error
+		pipelineConfig, err = config.LoadConfigFromYAMLFile("../config/config.example.yml")
+		Expect(err).NotTo(HaveOccurred())
+
+		renderdata = PrepareRenderData(pipelineConfig, db)
 	})
 
-	Describe("Organize data based on pipeline configuration", func() {
-		It("should have two tiers", func() {
-			pipelineConfig, err := config.LoadConfigFromYAMLFile("../config/config.example.yml")
-			Expect(err).NotTo(HaveOccurred())
-			renderdata = NewRenderData(pipelineConfig)
-
-			Expect(len(*expectedDeployments)).To(Equal(2))
-		})
+	It("has tiers", func() {
+		Expect(len(renderdata.Tiers)).To(Equal(len(*expectedTiers)))
 	})
 })
