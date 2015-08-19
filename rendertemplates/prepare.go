@@ -1,7 +1,7 @@
 package rendertemplates
 
 import (
-	"fmt"
+	"regexp"
 
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/config"
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/data"
@@ -33,14 +33,25 @@ func PrepareRenderData(config *config.PipelinesConfig, db data.DeploymentsPerBOS
 
 // DiscoverDeploymentsForSlot searches through the database of known BOSH deployments for those
 // that should appear in a configured tier/slot
-func (renderdata *RenderData) DiscoverDeploymentsForSlot(db data.DeploymentsPerBOSH, configTier config.Tier, configSlot config.Slot) (deployments Deployments) {
-	fmt.Println(configTier)
-	fmt.Println(configSlot)
+func (renderdata *RenderData) DiscoverDeploymentsForSlot(db data.DeploymentsPerBOSH, configTier config.Tier, configSlot config.Slot) Deployments {
+	var deployments Deployments
 	for _, boshDeployments := range db {
-		boshName := boshDeployments.Name
-		deployments := boshDeployments.Deployments
-		fmt.Println(boshName)
-		fmt.Println(deployments)
+		for _, boshDeployment := range boshDeployments.Deployments {
+			match := false
+			if configSlot.Filter.DeploymentNameRegexp != "" {
+				match, _ = regexp.MatchString(configSlot.Filter.DeploymentNameRegexp, boshDeployment.Name)
+				if match {
+					deployment := &Deployment{}
+					deployments = append(deployments, deployment)
+				}
+			}
+			if !match && configSlot.Filter.BoshUUID != "" {
+				if boshDeployments.UUID == configSlot.Filter.BoshUUID {
+					deployment := &Deployment{}
+					deployments = append(deployments, deployment)
+				}
+			}
+		}
 	}
-	return
+	return deployments
 }

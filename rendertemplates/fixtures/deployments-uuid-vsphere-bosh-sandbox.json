@@ -8,5 +8,5 @@
         {"name":"cf-haproxy","version":"5"}],
       "stemcells":[
         {"name":"bosh-vsphere-esxi-ubuntu-trusty-go_agent","version":"3048"}],
-  "cloud_config":"none"}]
+      "cloud_config":"none"}]
 }

@@ -55,4 +55,7 @@ var _ = Describe("Prepare data for templates", func() {
 			}
 		}
 	})
+	// It("has db", func() {
+	// 	fmt.Println(db)
+	// })
 })
