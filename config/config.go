@@ -15,16 +15,22 @@ type PipelinesConfig struct {
 			UsingBoshReleases []string `yaml:"using_bosh_releases"`
 		} `yaml:"filter"`
 	} `yaml:"pipelines"`
-	Tiers []struct {
-		Name  string `yaml:"name"`
-		Slots []struct {
-			Name   string `yaml:"name"`
-			Filter struct {
-				BoshUUID             string `yaml:"bosh_uuid"`
-				DeploymentNameRegexp string `yaml:"deployment_name_regexp"`
-			} `yaml:"filter"`
-		} `yaml:"slots"`
-	} `yaml:"tiers"`
+	Tiers []Tier `yaml:"tiers"`
+}
+
+// Tier is a single Tier of a deployment pipeline
+type Tier struct {
+	Name  string `yaml:"name"`
+	Slots []Slot `yaml:"slots"`
+}
+
+// Slot is a deployment (or more) within a deployment pipeline
+type Slot struct {
+	Name   string `yaml:"name"`
+	Filter struct {
+		BoshUUID             string `yaml:"bosh_uuid"`
+		DeploymentNameRegexp string `yaml:"deployment_name_regexp"`
+	} `yaml:"filter"`
 }
 
 // LoadConfigFromYAMLFile loads pipeline configuration from a YAML file

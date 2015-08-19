@@ -1,5 +1,6 @@
 {
   "uuid": "uuid-aws-bosh-production",
+  "name": "aws-prod",
   "deployments": [
     {"name":"cf-aws-prod",
     "releases":[

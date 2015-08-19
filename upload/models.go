@@ -3,6 +3,7 @@ package upload
 // UploadedFromBOSH is the inbound data from a BOSH
 type UploadedFromBOSH struct {
 	UUID        string                      `form:"uuid"`
+	Name        string                      `form:"name"`
 	Deployments UploadedDeploymentsFromBOSH `form:"deployments"`
 }
 

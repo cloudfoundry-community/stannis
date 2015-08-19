@@ -1,5 +1,6 @@
 {
   "uuid": "uuid-vsphere-bosh-sandbox",
+  "name": "dc-sandbox",
   "deployments": [
     {"name":"cf-vsph-sandbox",
       "releases":[
