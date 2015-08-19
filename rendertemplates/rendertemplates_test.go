@@ -1,6 +1,10 @@
 package rendertemplates_test
 
 import (
+	"fmt"
+
+	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/config"
+	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/data"
 	. "github.com/cloudfoundry-community/bosh-pipeline-dashboard/rendertemplates"
 
 	. "github.com/onsi/ginkgo"
@@ -9,13 +13,27 @@ import (
 
 var _ = Describe("Prepare data for templates", func() {
 	var (
+		// pipelineConfig      config.PipelinesConfig
 		expectedDeployments *PipelinedDeployments
+		db                  data.DeploymentsPerBOSH
 	)
 	BeforeEach(func() {
 		expectedDeployments = ExampleData()
+		db = data.NewDeploymentsPerBOSH()
+
+		db.LoadFixtureData("fixtures/deployments-uuid-some-bosh-lite.json")
+		db.LoadFixtureData("fixtures/deployments-uuid-aws-bosh-production.json")
+		db.LoadFixtureData("fixtures/deployments-uuid-vsphere-bosh-sandbox.json")
 	})
 
-	It("should have two tiers", func() {
-		Expect(len(*expectedDeployments)).To(Equal(2))
+	Describe("Organize data based on pipeline configuration", func() {
+		It("should have two tiers", func() {
+			pipelineConfig, err := config.LoadConfigFromYAMLFile("../config/config.example.yml")
+			Expect(err).NotTo(HaveOccurred())
+
+			fmt.Println(pipelineConfig)
+			fmt.Println(db)
+			Expect(len(*expectedDeployments)).To(Equal(2))
+		})
 	})
 })
