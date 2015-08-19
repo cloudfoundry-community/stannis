@@ -60,6 +60,9 @@ var _ = Describe("Prepare data for templates", func() {
 					Expect(expectedDeployment).ToNot(BeNil())
 
 					Expect(renderDeployment.Name).To(Equal(expectedDeployment.Name))
+
+					Expect(len(renderDeployment.Releases)).To(Equal(len(expectedDeployment.Releases)))
+					Expect(len(renderDeployment.Stemcells)).To(Equal(len(expectedDeployment.Stemcells)))
 				}
 			}
 		}

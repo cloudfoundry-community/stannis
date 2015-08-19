@@ -61,12 +61,12 @@ type Deployments []*Deployment
 // Releases and Stemcells it is using.
 type Deployment struct {
 	Name      string
-	Releases  []NameVersion
-	Stemcells []NameVersion
+	Releases  []DisplayNameVersion
+	Stemcells []DisplayNameVersion
 }
 
-// NameVersion is a reusable structure for Name/Version information
-type NameVersion struct {
+// DisplayNameVersion is a reusable structure for Name/Version information
+type DisplayNameVersion struct {
 	Name         string
 	Version      string
 	DisplayClass string
@@ -80,12 +80,36 @@ func NewDeployment(configTier config.Tier, configSlot config.Slot, boshDeploymen
 	if len(boshDeployment.Stemcells) > 0 {
 		cpi = cpiFromStemcell(boshDeployment.Stemcells[0].Name)
 	}
+
 	name := fmt.Sprintf("%s / %s / %s - %s", tierName, slotName, cpi, boshDeployment.Name)
 	if slotName == cpi {
 		name = fmt.Sprintf("%s / %s - %s", tierName, slotName, boshDeployment.Name)
 	}
+
+	releases := make([]DisplayNameVersion, len(boshDeployment.Releases))
+	for releaseIndex := range releases {
+		boshRelease := boshDeployment.Releases[releaseIndex]
+		releases[releaseIndex] = DisplayNameVersion{
+			Name:         boshRelease.Name,
+			Version:      boshRelease.Version,
+			DisplayClass: "icon-minus blue",
+		}
+	}
+
+	stemcells := make([]DisplayNameVersion, len(boshDeployment.Stemcells))
+	for stemcellIndex := range stemcells {
+		boshStemcell := boshDeployment.Stemcells[stemcellIndex]
+		stemcells[stemcellIndex] = DisplayNameVersion{
+			Name:         boshStemcell.Name,
+			Version:      boshStemcell.Version,
+			DisplayClass: "icon-minus blue",
+		}
+	}
+
 	deployment = &Deployment{
-		Name: name,
+		Name:      name,
+		Releases:  releases,
+		Stemcells: stemcells,
 	}
 	return
 }
