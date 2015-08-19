@@ -12,12 +12,12 @@ import (
 var _ = Describe("Prepare data for templates", func() {
 	var (
 		pipelineConfig *config.PipelinesConfig
-		expectedTiers  *Tiers
+		expectedTiers  Tiers
 		db             data.DeploymentsPerBOSH
 		renderdata     *RenderData
 	)
 	BeforeEach(func() {
-		expectedTiers = TestScenarioData()
+		expectedTiers = *TestScenarioData()
 		db = data.NewDeploymentsPerBOSH()
 
 		db.LoadFixtureData("fixtures/deployments-uuid-some-bosh-lite.json")
@@ -32,6 +32,27 @@ var _ = Describe("Prepare data for templates", func() {
 	})
 
 	It("has tiers", func() {
-		Expect(len(renderdata.Tiers)).To(Equal(len(*expectedTiers)))
+		Expect(len(renderdata.Tiers)).To(Equal(len(expectedTiers)))
+	})
+
+	It("has slots in tier", func() {
+		for tierIndex := range renderdata.Tiers {
+			renderTier := renderdata.Tiers[tierIndex]
+			Expect(renderTier).ToNot(BeNil())
+			expectedTier := *expectedTiers[tierIndex]
+			Expect(expectedTier).ToNot(BeNil())
+
+			Expect(renderTier.Name).To(Equal(expectedTier.Name))
+			Expect(len(renderTier.Slots)).To(Equal(len(expectedTier.Slots)))
+
+			for slotIndex := range renderTier.Slots {
+				renderSlot := renderTier.Slots[slotIndex]
+				Expect(renderSlot).ToNot(BeNil())
+				expectedSlot := expectedTier.Slots[slotIndex]
+				Expect(expectedSlot).ToNot(BeNil())
+
+				Expect(len(renderSlot.Deployments)).To(Equal(len(expectedSlot.Deployments)))
+			}
+		}
 	})
 })

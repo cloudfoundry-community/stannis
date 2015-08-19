@@ -16,14 +16,14 @@ type PipelinesConfig struct {
 		} `yaml:"filter"`
 	} `yaml:"pipelines"`
 	Tiers []struct {
-		Name    string `yaml:"name"`
-		Columns []struct {
+		Name  string `yaml:"name"`
+		Slots []struct {
 			Name   string `yaml:"name"`
 			Filter struct {
 				BoshUUID             string `yaml:"bosh_uuid"`
 				DeploymentNameRegexp string `yaml:"deployment_name_regexp"`
 			} `yaml:"filter"`
-		} `yaml:"columns"`
+		} `yaml:"slots"`
 	} `yaml:"tiers"`
 }
 

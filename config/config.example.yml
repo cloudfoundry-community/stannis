@@ -14,12 +14,12 @@ pipelines:
     using_bosh_releases: [docker, logstash-docker]
 tiers:
   - name: try-anything
-    columns:
+    slots:
       - name: bosh-lite
         filter:
           deployment_name_regexp: try-anything
   - name: dc
-    columns:
+    slots:
       - name: sandbox
         filter:
           bosh_uuid: uuid-vsphere-bosh-sandbox
@@ -30,7 +30,7 @@ tiers:
         filter:
           bosh_uuid: uuid-vsphere-bosh-production
   - name: aws
-    columns:
+    slots:
       - name: sandbox
         filter:
           bosh_uuid: uuid-aws-bosh-sandbox

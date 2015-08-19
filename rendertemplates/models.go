@@ -44,7 +44,12 @@ type Tier struct {
 type Slots []*Slot
 
 // Slot in the dashboard that displays some deployments
-type Slot []*Deployment
+type Slot struct {
+	Deployments Deployments
+}
+
+// Deployments is a set of deployments
+type Deployments []*Deployment
 
 // Deployment describes a running BOSH deployment and the
 // Releases and Stemcells it is using.

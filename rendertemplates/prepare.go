@@ -12,8 +12,19 @@ func PrepareRenderData(config *config.PipelinesConfig, data data.DeploymentsPerB
 		Config: config,
 		Tiers:  tiers,
 	}
-	// for configTier, i := range config.Tiers {
-	// 	tiers[i]
-	// }
+	for tierIndex, configTier := range config.Tiers {
+		slots := make([]*Slot, len(configTier.Slots))
+		tiers[tierIndex] = &Tier{
+			Name:  configTier.Name,
+			Slots: slots,
+		}
+
+		for slotIndex := range configTier.Slots {
+			deployments := Deployments{}
+			slots[slotIndex] = &Slot{
+				Deployments: deployments,
+			}
+		}
+	}
 	return renderdata
 }
