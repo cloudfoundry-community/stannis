@@ -18,7 +18,7 @@ tiers:
       - name: bosh-lite
         filter:
           deployment_name_regexp: try-anything
-  - name: internal-datacenter
+  - name: dc
     columns:
       - name: sandbox
         filter:
@@ -29,7 +29,7 @@ tiers:
       - name: production
         filter:
           bosh_uuid: uuid-vsphere-bosh-production
-  - name: aws-us-east-1
+  - name: aws
     columns:
       - name: sandbox
         filter:

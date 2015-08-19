@@ -39,7 +39,13 @@ type RenderData struct {
 type PipelinedDeployments []*Tier
 
 // Tier is a collection of deployments in the Director
-type Tier []*Slot
+type Tier struct {
+	Name  string
+	Slots Slots
+}
+
+// Slots is an ordered sequence of slots in a pipeline of deployments within a Tier
+type Slots []*Slot
 
 // Slot in the dashboard that displays some deployments
 type Slot []*Deployment
@@ -80,63 +86,66 @@ func (renderdata RenderData) addBOSHDeployments(data upload.UploadedFromBOSH) {
 func TestScenarioData() *PipelinedDeployments {
 	return &PipelinedDeployments{
 		&Tier{
-			&Slot{
-				&Deployment{
-					Name: "try-anything / bosh-lite - cf-try-anything",
-					Releases: []NameVersion{
-						NameVersion{Name: "cf", Version: "214", DisplayClass: "icon-arrow-up green"},
-						NameVersion{Name: "cf-sensu-client", Version: "1", DisplayClass: "icon-minus blue"},
+			Name: "try-anything",
+			Slots: Slots{
+				&Slot{
+					&Deployment{
+						Name: "try-anything / bosh-lite - cf-try-anything",
+						Releases: []NameVersion{
+							NameVersion{Name: "cf", Version: "214", DisplayClass: "icon-arrow-up green"},
+							NameVersion{Name: "cf-haproxy", Version: "5", DisplayClass: "icon-minus blue"},
+						},
+						Stemcells: []NameVersion{
+							NameVersion{Name: "warden", Version: "2776", DisplayClass: "icon-minus blue"},
+						},
 					},
-					Stemcells: []NameVersion{
-						NameVersion{Name: "warden", Version: "2776", DisplayClass: "icon-minus blue"},
-					},
-				},
-				&Deployment{
-					Name: "try-anything / bosh-lite-2 - cf2-try-anything",
-					Releases: []NameVersion{
-						NameVersion{Name: "cf", Version: "214", DisplayClass: "icon-arrow-up green"},
-						NameVersion{Name: "cf-sensu-client", Version: "2", DisplayClass: "icon-arrow-up green"},
-					},
-					Stemcells: []NameVersion{
-						NameVersion{Name: "warden", Version: "2776", DisplayClass: "icon-minus blue"},
+					&Deployment{
+						Name: "try-anything / bosh-lite - cf2-try-anything",
+						Releases: []NameVersion{
+							NameVersion{Name: "cf", Version: "215", DisplayClass: "icon-arrow-up green"},
+							NameVersion{Name: "cf-haproxy", Version: "6", DisplayClass: "icon-arrow-up green"},
+						},
+						Stemcells: []NameVersion{
+							NameVersion{Name: "warden", Version: "2776", DisplayClass: "icon-minus blue"},
+						},
 					},
 				},
 			},
 		},
 		&Tier{
-			&Slot{
-				&Deployment{
-					Name: "legacy / sandbox / aws - cf-sandbox-r5",
-					Releases: []NameVersion{
-						NameVersion{Name: "cf", Version: "211", DisplayClass: "icon-arrow-down red"},
-						NameVersion{Name: "cf-sensu-client", Version: "1", DisplayClass: "icon-minus blue"},
-					},
-					Stemcells: []NameVersion{
-						NameVersion{Name: "aws", Version: "3033", DisplayClass: "icon-minus blue"},
-					},
-				},
-			},
-			&Slot{
-				&Deployment{
-					Name: "legacy / dev / aws - cf-devprod-r2",
-					Releases: []NameVersion{
-						NameVersion{Name: "cf", Version: "211", DisplayClass: "icon-minus blue"},
-						NameVersion{Name: "cf-sensu-client", Version: "1", DisplayClass: "icon-minus blue"},
-					},
-					Stemcells: []NameVersion{
-						NameVersion{Name: "aws", Version: "3033", DisplayClass: "icon-minus blue"},
+			Name: "dc",
+			Slots: Slots{
+				&Slot{
+					&Deployment{
+						Name: "dc / sandbox / vsphere - cf-vsph-sandbox",
+						Releases: []NameVersion{
+							NameVersion{Name: "cf", Version: "215", DisplayClass: "icon-arrow-down red"},
+							NameVersion{Name: "cf-haproxy", Version: "5", DisplayClass: "icon-minus blue"},
+						},
+						Stemcells: []NameVersion{
+							NameVersion{Name: "vsphere", Version: "3048", DisplayClass: "icon-arrow-up green"},
+						},
 					},
 				},
+				&Slot{},
+				&Slot{},
 			},
-			&Slot{
-				&Deployment{
-					Name: "legacy / prod / aws - prod-cloudfoundry",
-					Releases: []NameVersion{
-						NameVersion{Name: "cf", Version: "205", DisplayClass: "icon-arrow-down red"},
-						NameVersion{Name: "cf-sensu-client", Version: "1", DisplayClass: "icon-minus blue"},
-					},
-					Stemcells: []NameVersion{
-						NameVersion{Name: "aws", Version: "3000", DisplayClass: "icon-arrow-down red"},
+		},
+		&Tier{
+			Name: "aws",
+			Slots: Slots{
+				&Slot{},
+				&Slot{},
+				&Slot{
+					&Deployment{
+						Name: "aws / sandbox / aws - cf-aws-prod",
+						Releases: []NameVersion{
+							NameVersion{Name: "cf", Version: "211", DisplayClass: "icon-arrow-down red"},
+							NameVersion{Name: "cf-haproxy", Version: "5", DisplayClass: "icon-minus blue"},
+						},
+						Stemcells: []NameVersion{
+							NameVersion{Name: "aws", Version: "3033", DisplayClass: "icon-minus blue"},
+						},
 					},
 				},
 			},

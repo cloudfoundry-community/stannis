@@ -1,4 +1,11 @@
 {
   "uuid": "uuid-vsphere-bosh-sandbox",
-  "deployments": [{"name":"cf-try-anything","releases":[{"name":"cf","version":"215"},{"name":"cf-haproxy","version":"5"}],"stemcells":[{"name":"bosh-vsphere-esxi-ubuntu-trusty-go_agent","version":"3048"}],"cloud_config":"none"}]
+  "deployments": [
+    {"name":"cf-vsph-sandbox",
+      "releases":[
+        {"name":"cf","version":"215"},
+        {"name":"cf-haproxy","version":"5"}],
+      "stemcells":[
+        {"name":"bosh-vsphere-esxi-ubuntu-trusty-go_agent","version":"3048"}],
+  "cloud_config":"none"}]
 }
