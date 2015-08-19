@@ -40,11 +40,44 @@ func updateLatestDeployments(fromBOSH upload.UploadedFromBOSH) string {
 	return fmt.Sprintf("%v\n", db)
 }
 
+func runAgent(c *cli.Context) {
+
+}
+
+func runWebserver(c *cli.Context) {
+	pipelinesConfigPath := c.String("config")
+	var err error
+	pipelinesConfig, err = config.LoadConfigFromYAMLFile(pipelinesConfigPath)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(pipelinesConfig)
+	// fmt.Printf("%v\n", config.Tiers[0].Columns[0].Filter)
+	m := martini.Classic()
+	m.Use(render.Renderer())
+	m.Get("/", dashboard)
+	m.Post("/upload", binding.Json(upload.UploadedFromBOSH{}), updateLatestDeployments)
+	m.Run()
+}
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "bosh-pipeline-dashboard"
+	app.Version = "0.1.0"
 	app.Usage = "What deployments are running in which BOSH?"
 	app.Commands = []cli.Command{
+		{
+			Name:  "agent",
+			Usage: "publish local BOSH deployments to webserver",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "config",
+					Value: "config.yml",
+					Usage: "pipelines configuration",
+				},
+			},
+			Action: runAgent,
+		},
 		{
 			Name:  "webserver",
 			Usage: "run the collector/dashboard",
@@ -55,21 +88,7 @@ func main() {
 					Usage: "pipelines configuration",
 				},
 			},
-			Action: func(c *cli.Context) {
-				pipelinesConfigPath := c.String("config")
-				var err error
-				pipelinesConfig, err = config.LoadConfigFromYAMLFile(pipelinesConfigPath)
-				if err != nil {
-					log.Fatalln(err)
-				}
-				fmt.Println(pipelinesConfig)
-				// fmt.Printf("%v\n", config.Tiers[0].Columns[0].Filter)
-				m := martini.Classic()
-				m.Use(render.Renderer())
-				m.Get("/", dashboard)
-				m.Post("/upload", binding.Json(upload.UploadedFromBOSH{}), updateLatestDeployments)
-				m.Run()
-			},
+			Action: runWebserver,
 		},
 	}
 	app.Run(os.Args)
