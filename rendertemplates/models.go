@@ -39,10 +39,10 @@ type RenderData struct {
 type PipelinedDeployments []*Tier
 
 // Tier is a collection of deployments in the Director
-type Tier []*Column
+type Tier []*Slot
 
-// Column is a slot in the dashboard that displays some deployments
-type Column []*Deployment
+// Slot in the dashboard that displays some deployments
+type Slot []*Deployment
 
 // Deployment describes a running BOSH deployment and the
 // Releases and Stemcells it is using.
@@ -80,7 +80,7 @@ func (renderdata RenderData) addBOSHDeployments(data upload.UploadedFromBOSH) {
 func TestScenarioData() *PipelinedDeployments {
 	return &PipelinedDeployments{
 		&Tier{
-			&Column{
+			&Slot{
 				&Deployment{
 					Name: "try-anything / bosh-lite - cf-try-anything",
 					Releases: []NameVersion{
@@ -104,7 +104,7 @@ func TestScenarioData() *PipelinedDeployments {
 			},
 		},
 		&Tier{
-			&Column{
+			&Slot{
 				&Deployment{
 					Name: "legacy / sandbox / aws - cf-sandbox-r5",
 					Releases: []NameVersion{
@@ -116,7 +116,7 @@ func TestScenarioData() *PipelinedDeployments {
 					},
 				},
 			},
-			&Column{
+			&Slot{
 				&Deployment{
 					Name: "legacy / dev / aws - cf-devprod-r2",
 					Releases: []NameVersion{
@@ -128,7 +128,7 @@ func TestScenarioData() *PipelinedDeployments {
 					},
 				},
 			},
-			&Column{
+			&Slot{
 				&Deployment{
 					Name: "legacy / prod / aws - prod-cloudfoundry",
 					Releases: []NameVersion{
