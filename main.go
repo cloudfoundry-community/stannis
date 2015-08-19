@@ -14,34 +14,43 @@ import (
 	"github.com/martini-contrib/render"
 )
 
-var boshDeployments data.DeploymentsPerBOSH
+var db data.DeploymentsPerBOSH
+var pipelinesConfig *config.PipelinesConfig
 
 func init() {
-	boshDeployments = data.NewDeploymentsPerBOSH()
+	db = data.NewDeploymentsPerBOSH()
 }
 
 func dashboard(r render.Render) {
-	// deployments := rendertemplates.PrepareDeployments(boshDeployments)
-	deployments := rendertemplates.TestScenarioData()
-	r.HTML(200, "dashboard", deployments)
+	renderdata := rendertemplates.PrepareRenderData(pipelinesConfig, db)
+	tiers := renderdata.Tiers
+	fmt.Println(renderdata.Tiers[0].Slots[0])
+	fmt.Println(renderdata.Tiers[0].Slots[0].Deployments)
+	fmt.Println(renderdata.Tiers[1].Slots[0])
+	fmt.Println(renderdata.Tiers[1].Slots[0].Deployments)
+
+	// tiers := rendertemplates.TestScenarioData()
+
+	r.HTML(200, "dashboard", tiers)
 }
 
 func updateLatestDeployments(fromBOSH upload.UploadedFromBOSH) string {
-	boshDeployments[fromBOSH.UUID] = fromBOSH
-	return fmt.Sprintf("%v\n", boshDeployments)
+	db[fromBOSH.UUID] = fromBOSH
+	return fmt.Sprintf("%v\n", db)
 }
 
 func main() {
-	pipelinesConfig := flag.String("pipelines", "config.yml", "configuration of pipelines for dashboards")
+	pipelinesFlag := flag.String("pipelines", "config.yml", "configuration of pipelines for dashboards")
 	flag.Parse()
 
 	// TODO: if pipelines file missing/corrupt then default to no pipelines; so app "just works"
 
-	config, err := config.LoadConfigFromYAMLFile(*pipelinesConfig)
+	var err error
+	pipelinesConfig, err = config.LoadConfigFromYAMLFile(*pipelinesFlag)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	fmt.Println(config)
+	fmt.Println(pipelinesConfig)
 	// fmt.Printf("%v\n", config.Tiers[0].Columns[0].Filter)
 	m := martini.Classic()
 	m.Use(render.Renderer())
