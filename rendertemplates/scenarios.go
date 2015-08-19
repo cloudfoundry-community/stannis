@@ -61,7 +61,7 @@ func TestScenarioData() *Tiers {
 				&Slot{
 					Deployments: Deployments{
 						&Deployment{
-							Name: "aws / sandbox / aws - cf-aws-prod",
+							Name: "aws / production / aws - cf-aws-prod",
 							Releases: []NameVersion{
 								NameVersion{Name: "cf", Version: "211", DisplayClass: "icon-arrow-down red"},
 								NameVersion{Name: "cf-haproxy", Version: "5", DisplayClass: "icon-minus blue"},

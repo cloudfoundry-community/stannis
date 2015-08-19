@@ -41,12 +41,12 @@ func (renderdata *RenderData) DiscoverDeploymentsForSlot(db data.DeploymentsPerB
 			if configSlot.Filter.DeploymentNameRegexp != "" {
 				match, _ = regexp.MatchString(configSlot.Filter.DeploymentNameRegexp, boshDeployment.Name)
 				if match {
-					deployments = append(deployments, NewDeployment(boshDeployment))
+					deployments = append(deployments, NewDeployment(configTier, configSlot, boshDeployment))
 				}
 			}
 			if !match && configSlot.Filter.BoshUUID != "" {
 				if boshDeployments.UUID == configSlot.Filter.BoshUUID {
-					deployments = append(deployments, NewDeployment(boshDeployment))
+					deployments = append(deployments, NewDeployment(configTier, configSlot, boshDeployment))
 				}
 			}
 		}

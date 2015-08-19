@@ -52,10 +52,16 @@ var _ = Describe("Prepare data for templates", func() {
 				Expect(expectedSlot).ToNot(BeNil())
 
 				Expect(len(renderSlot.Deployments)).To(Equal(len(expectedSlot.Deployments)))
+
+				for deploymentIndex := range renderSlot.Deployments {
+					renderDeployment := renderSlot.Deployments[deploymentIndex]
+					Expect(renderDeployment).ToNot(BeNil())
+					expectedDeployment := expectedSlot.Deployments[deploymentIndex]
+					Expect(expectedDeployment).ToNot(BeNil())
+
+					Expect(renderDeployment.Name).To(Equal(expectedDeployment.Name))
+				}
 			}
 		}
 	})
-	// It("has db", func() {
-	// 	fmt.Println(db)
-	// })
 })
