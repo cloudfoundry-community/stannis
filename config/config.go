@@ -18,8 +18,11 @@ type PipelinesConfig struct {
 	Tiers []struct {
 		Name    string `yaml:"name"`
 		Columns []struct {
-			Name     string `yaml:"name"`
-			BoshUUID string `yaml:"bosh_uuid"`
+			Name   string `yaml:"name"`
+			Filter struct {
+				BoshUUID             string `yaml:"bosh_uuid"`
+				DeploymentNameRegexp string `yaml:"deployment_name_regexp"`
+			} `yaml:"filter"`
 		} `yaml:"columns"`
 	} `yaml:"tiers"`
 }

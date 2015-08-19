@@ -16,20 +16,27 @@ tiers:
   - name: try-anything
     columns:
       - name: bosh-lite
-        bosh_uuid: uuid-some-bosh-lite
+        filter:
+          deployment_name_regexp: try-anything
   - name: internal-datacenter
     columns:
       - name: sandbox
-        bosh_uuid: uuid-vsphere-bosh-sandbox
+        filter:
+          bosh_uuid: uuid-vsphere-bosh-sandbox
       - name: preprod
-        bosh_uuid: uuid-vsphere-bosh-preprod
+        filter:
+          bosh_uuid: uuid-vsphere-bosh-preprod
       - name: production
-        bosh_uuid: uuid-vsphere-bosh-production
+        filter:
+          bosh_uuid: uuid-vsphere-bosh-production
   - name: aws-us-east-1
     columns:
       - name: sandbox
-        bosh_uuid: uuid-aws-bosh-sandbox
+        filter:
+          bosh_uuid: uuid-aws-bosh-sandbox
       - name: preprod
-        bosh_uuid: uuid-aws-bosh-preprod
+        filter:
+          bosh_uuid: uuid-aws-bosh-preprod
       - name: production
-        bosh_uuid: uuid-aws-bosh-production
+        filter:
+          bosh_uuid: uuid-aws-bosh-production
