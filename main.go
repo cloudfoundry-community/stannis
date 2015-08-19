@@ -22,7 +22,7 @@ func init() {
 
 func dashboard(r render.Render) {
 	// deployments := rendertemplates.PrepareDeployments(boshDeployments)
-	deployments := rendertemplates.ExampleData()
+	deployments := rendertemplates.TestScenarioData()
 	r.HTML(200, "dashboard", deployments)
 }
 
@@ -42,6 +42,7 @@ func main() {
 		log.Fatalln(err)
 	}
 	fmt.Println(config)
+	// fmt.Printf("%v\n", config.Tiers[0].Columns[0].Filter)
 	m := martini.Classic()
 	m.Use(render.Renderer())
 	m.Get("/", dashboard)

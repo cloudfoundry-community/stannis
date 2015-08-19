@@ -13,10 +13,10 @@ var _ = Describe("Prepare data for templates", func() {
 	var (
 		expectedDeployments *PipelinedDeployments
 		db                  data.DeploymentsPerBOSH
-		renderdata          *PipelinedDeployments
+		renderdata          *RenderData
 	)
 	BeforeEach(func() {
-		expectedDeployments = ExampleData()
+		expectedDeployments = TestScenarioData()
 		db = data.NewDeploymentsPerBOSH()
 
 		db.LoadFixtureData("fixtures/deployments-uuid-some-bosh-lite.json")
@@ -28,7 +28,7 @@ var _ = Describe("Prepare data for templates", func() {
 		It("should have two tiers", func() {
 			pipelineConfig, err := config.LoadConfigFromYAMLFile("../config/config.example.yml")
 			Expect(err).NotTo(HaveOccurred())
-			renderdata = NewPipelinedDeployments(pipelineConfig)
+			renderdata = NewRenderData(pipelineConfig)
 
 			Expect(len(*expectedDeployments)).To(Equal(2))
 		})

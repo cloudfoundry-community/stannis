@@ -6,6 +6,15 @@ import (
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/upload"
 )
 
+//Transposing the BOSH deployments data and mapping them into columns
+// For each
+
+// RenderData is a collection of deployments in the Director by tiers/pipelines
+type RenderData struct {
+	Config      *config.PipelinesConfig
+	Deployments PipelinedDeployments
+}
+
 // PipelinedDeployments is a collection of deployments in the Director by tiers/pipelines
 type PipelinedDeployments []*Deployments
 
@@ -27,26 +36,27 @@ type NameVersion struct {
 	DisplayClass string
 }
 
-// NewPipelinedDeployments constructs new renderdata
-func NewPipelinedDeployments(config *config.PipelinesConfig) *PipelinedDeployments {
-	return &PipelinedDeployments{}
+// NewRenderData constructs new renderdata
+func NewRenderData(config *config.PipelinesConfig) *RenderData {
+	return &RenderData{Config: config}
 }
 
 // PrepareDeployments converts data into structures used by dashboard template
-func (renderdata *PipelinedDeployments) PrepareDeployments(data data.DeploymentsPerBOSH) {
+func (renderdata *RenderData) PrepareDeployments(data data.DeploymentsPerBOSH) {
 	// TODO: structure the output based on pipeline configuration
 	for _, boshDeployments := range data {
 		renderdata.addBOSHDeployments(boshDeployments)
 	}
 }
 
-func (renderdata PipelinedDeployments) addBOSHDeployments(data upload.UploadedFromBOSH) {
+func (renderdata RenderData) addBOSHDeployments(data upload.UploadedFromBOSH) {
 	// deployments := &Deployments{}
 }
 
-// ExampleData returns some example data
-func ExampleData() *PipelinedDeployments {
+// TestScenarioData returns some example data
+func TestScenarioData() *PipelinedDeployments {
 	return &PipelinedDeployments{
+
 		&Deployments{
 			&Deployment{
 				Name: "try-anything / bosh-lite - cf-try-anything",
