@@ -2,13 +2,13 @@ package upload
 
 // UploadedFromBOSH is the inbound data from a BOSH
 type UploadedFromBOSH struct {
-	UUID        string                      `form:"uuid"`
-	Name        string                      `form:"name"`
-	Deployments UploadedDeploymentsFromBOSH `form:"deployments"`
+	UUID        string                       `form:"uuid"`
+	Name        string                       `form:"name"`
+	Deployments []UploadedDeploymentFromBOSH `form:"deployments"`
 }
 
-// UploadedDeploymentsFromBOSH is the received list of deployments from a BOSH
-type UploadedDeploymentsFromBOSH []struct {
+// UploadedDeploymentFromBOSH is the received list of deployments from a BOSH
+type UploadedDeploymentFromBOSH struct {
 	Name     string `form:"name"`
 	Releases []struct {
 		Name    string `form:"name"`

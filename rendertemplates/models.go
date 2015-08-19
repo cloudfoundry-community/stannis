@@ -1,6 +1,9 @@
 package rendertemplates
 
-import "github.com/cloudfoundry-community/bosh-pipeline-dashboard/config"
+import (
+	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/config"
+	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/upload"
+)
 
 // The PipelinedDeployments struct is used by the dashboard template to render/display
 // the BOSH deployments.
@@ -64,4 +67,10 @@ type NameVersion struct {
 	Name         string
 	Version      string
 	DisplayClass string
+}
+
+// NewDeployment converts BOSH deployment information into a deployment view for the dashboard
+func NewDeployment(boshDeployment upload.UploadedDeploymentFromBOSH) (deployment *Deployment) {
+	deployment = &Deployment{}
+	return
 }
