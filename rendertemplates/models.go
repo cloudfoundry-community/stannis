@@ -1,6 +1,7 @@
 package rendertemplates
 
 import (
+	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/config"
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/data"
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/upload"
 )
@@ -26,17 +27,20 @@ type NameVersion struct {
 	DisplayClass string
 }
 
-// PrepareDeployments converts data into structures used by dashboard template
-func PrepareDeployments(data data.DeploymentsPerBOSH) *PipelinedDeployments {
-	pipelines := &PipelinedDeployments{}
-	// TODO: structure the output based on pipeline configuration
-	for _, boshDeployments := range data {
-		pipelines.addBOSHDeployments(boshDeployments)
-	}
-	return pipelines
+// NewPipelinedDeployments constructs new renderdata
+func NewPipelinedDeployments(config *config.PipelinesConfig) *PipelinedDeployments {
+	return &PipelinedDeployments{}
 }
 
-func (pipelines PipelinedDeployments) addBOSHDeployments(data upload.UploadedFromBOSH) {
+// PrepareDeployments converts data into structures used by dashboard template
+func (renderdata *PipelinedDeployments) PrepareDeployments(data data.DeploymentsPerBOSH) {
+	// TODO: structure the output based on pipeline configuration
+	for _, boshDeployments := range data {
+		renderdata.addBOSHDeployments(boshDeployments)
+	}
+}
+
+func (renderdata PipelinedDeployments) addBOSHDeployments(data upload.UploadedFromBOSH) {
 	// deployments := &Deployments{}
 }
 

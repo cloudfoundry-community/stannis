@@ -1,8 +1,6 @@
 package rendertemplates_test
 
 import (
-	"fmt"
-
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/config"
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/data"
 	. "github.com/cloudfoundry-community/bosh-pipeline-dashboard/rendertemplates"
@@ -13,9 +11,9 @@ import (
 
 var _ = Describe("Prepare data for templates", func() {
 	var (
-		// pipelineConfig      config.PipelinesConfig
 		expectedDeployments *PipelinedDeployments
 		db                  data.DeploymentsPerBOSH
+		renderdata          *PipelinedDeployments
 	)
 	BeforeEach(func() {
 		expectedDeployments = ExampleData()
@@ -30,9 +28,8 @@ var _ = Describe("Prepare data for templates", func() {
 		It("should have two tiers", func() {
 			pipelineConfig, err := config.LoadConfigFromYAMLFile("../config/config.example.yml")
 			Expect(err).NotTo(HaveOccurred())
+			renderdata = NewPipelinedDeployments(pipelineConfig)
 
-			fmt.Println(pipelineConfig)
-			fmt.Println(db)
 			Expect(len(*expectedDeployments)).To(Equal(2))
 		})
 	})
