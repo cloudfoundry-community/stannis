@@ -6,8 +6,28 @@ import (
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/upload"
 )
 
-//Transposing the BOSH deployments data and mapping them into columns
-// For each
+// The PipelinedDeployments struct is used by the dashboard template to render/display
+// the BOSH deployments.
+// The BOSH deployments are filtered - say only displaying
+// Cloud Foundry deployments (those using 'cf' release), but no others.
+// The BOSH deployments are laid out on the dashboard - and hence structured in
+// PipelinedDeployments - based on the config.PipelinesConfig.
+//
+// The dashboard is laid out in "tiers" - rows down the page - that might represent
+// a group of deployments that are related - such as deployments in a common datacenter.
+// Within each "tier", the deployments are grouped into "columns" (could be thought
+// of as "slots"). Typically there might be a single deployment in each column -
+// typically representing a deployment in a sequenced pipeline of deployments,
+// sandbox -> pre-production -> production.
+//
+// To display a deployment is to display its name and the set of BOSH releases
+// and BOSH stemcells being used, and the versions of them. This is the primary
+// purpose of the dashboard view: what/where is software/versions running?
+//
+// It is assumed that deployments in the far right columns should be using BOSH release
+// versions that are older (smaller version number) than the deployments in columns
+// to the left. As such, visual indicators are given to show that a BOSH release
+// version is higher or lower than the deployment to its immediate left.
 
 // RenderData is a collection of deployments in the Director by tiers/pipelines
 type RenderData struct {
