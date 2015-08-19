@@ -37,7 +37,13 @@ You could programmatically extract the deployments from each BOSH (where the app
 
 ```
 deployments=$(curl -ks -u admin:admin https://10.20.30.40:25555/deployments)
-curl -X POST http://localhost:3000/bosh -d "{\"uuid\": \"the-uuid\", \"deployments\": $deployments}"
+curl -X POST http://localhost:3000/upload -d "{\"uuid\": \"the-uuid\", \"name\": \"bosh-lite\", \"deployments\": $deployments}"
+```
+
+If you are running the server with the example config (`go run main.go -pipelines config/config.example.yml`) then you can upload the example/fixtures data:
+
+```
+./bin/upload_fixtures
 ```
 
 Thanks

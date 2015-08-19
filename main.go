@@ -55,6 +55,6 @@ func main() {
 	m := martini.Classic()
 	m.Use(render.Renderer())
 	m.Get("/", dashboard)
-	m.Post("/bosh", binding.Json(upload.UploadedFromBOSH{}), updateLatestDeployments)
+	m.Post("/upload", binding.Json(upload.UploadedFromBOSH{}), updateLatestDeployments)
 	m.Run()
 }

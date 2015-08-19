@@ -1,0 +1,7 @@
+#!/bin/bash
+
+api=${api:-"http://localhost:3000"}
+
+for boshdeployment in $(ls rendertemplates/fixtures/*.json); do
+  curl -v -X POST ${api}/upload -d "$(cat $boshdeployment)"
+done
