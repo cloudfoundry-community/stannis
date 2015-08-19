@@ -1,1 +1,1 @@
-web: bosh-pipeline-dashboard
+web: bosh-pipeline-dashboard webserver

@@ -1,14 +1,15 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/config"
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/data"
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/rendertemplates"
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/upload"
+	"github.com/codegangsta/cli"
 	"github.com/codegangsta/martini-contrib/binding"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
@@ -40,21 +41,37 @@ func updateLatestDeployments(fromBOSH upload.UploadedFromBOSH) string {
 }
 
 func main() {
-	pipelinesFlag := flag.String("pipelines", "config.yml", "configuration of pipelines for dashboards")
-	flag.Parse()
-
-	// TODO: if pipelines file missing/corrupt then default to no pipelines; so app "just works"
-
-	var err error
-	pipelinesConfig, err = config.LoadConfigFromYAMLFile(*pipelinesFlag)
-	if err != nil {
-		log.Fatalln(err)
+	app := cli.NewApp()
+	app.Name = "bosh-pipeline-dashboard"
+	app.Usage = "What deployments are running in which BOSH?"
+	app.Commands = []cli.Command{
+		{
+			Name:  "webserver",
+			Usage: "run the collector/dashboard",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "config",
+					Value: "config.yml",
+					Usage: "pipelines configuration",
+				},
+			},
+			Action: func(c *cli.Context) {
+				pipelinesConfigPath := c.String("config")
+				var err error
+				pipelinesConfig, err = config.LoadConfigFromYAMLFile(pipelinesConfigPath)
+				if err != nil {
+					log.Fatalln(err)
+				}
+				fmt.Println(pipelinesConfig)
+				// fmt.Printf("%v\n", config.Tiers[0].Columns[0].Filter)
+				m := martini.Classic()
+				m.Use(render.Renderer())
+				m.Get("/", dashboard)
+				m.Post("/upload", binding.Json(upload.UploadedFromBOSH{}), updateLatestDeployments)
+				m.Run()
+			},
+		},
 	}
-	fmt.Println(pipelinesConfig)
-	// fmt.Printf("%v\n", config.Tiers[0].Columns[0].Filter)
-	m := martini.Classic()
-	m.Use(render.Renderer())
-	m.Get("/", dashboard)
-	m.Post("/upload", binding.Json(upload.UploadedFromBOSH{}), updateLatestDeployments)
-	m.Run()
+	app.Run(os.Args)
+
 }
