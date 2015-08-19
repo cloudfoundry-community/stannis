@@ -36,10 +36,13 @@ type RenderData struct {
 }
 
 // PipelinedDeployments is a collection of deployments in the Director by tiers/pipelines
-type PipelinedDeployments []*Deployments
+type PipelinedDeployments []*Tier
 
-// Deployments is a collection of deployments in the Director
-type Deployments []*Deployment
+// Tier is a collection of deployments in the Director
+type Tier []*Column
+
+// Column is a slot in the dashboard that displays some deployments
+type Column []*Deployment
 
 // Deployment describes a running BOSH deployment and the
 // Releases and Stemcells it is using.
@@ -76,48 +79,65 @@ func (renderdata RenderData) addBOSHDeployments(data upload.UploadedFromBOSH) {
 // TestScenarioData returns some example data
 func TestScenarioData() *PipelinedDeployments {
 	return &PipelinedDeployments{
-
-		&Deployments{
-			&Deployment{
-				Name: "try-anything / bosh-lite - cf-try-anything",
-				Releases: []NameVersion{
-					NameVersion{Name: "cf", Version: "214", DisplayClass: "icon-arrow-up green"},
-					NameVersion{Name: "cf-sensu-client", Version: "1", DisplayClass: "icon-minus blue"},
+		&Tier{
+			&Column{
+				&Deployment{
+					Name: "try-anything / bosh-lite - cf-try-anything",
+					Releases: []NameVersion{
+						NameVersion{Name: "cf", Version: "214", DisplayClass: "icon-arrow-up green"},
+						NameVersion{Name: "cf-sensu-client", Version: "1", DisplayClass: "icon-minus blue"},
+					},
+					Stemcells: []NameVersion{
+						NameVersion{Name: "warden", Version: "2776", DisplayClass: "icon-minus blue"},
+					},
 				},
-				Stemcells: []NameVersion{
-					NameVersion{Name: "warden", Version: "2776", DisplayClass: "icon-minus blue"},
+				&Deployment{
+					Name: "try-anything / bosh-lite-2 - cf2-try-anything",
+					Releases: []NameVersion{
+						NameVersion{Name: "cf", Version: "214", DisplayClass: "icon-arrow-up green"},
+						NameVersion{Name: "cf-sensu-client", Version: "2", DisplayClass: "icon-arrow-up green"},
+					},
+					Stemcells: []NameVersion{
+						NameVersion{Name: "warden", Version: "2776", DisplayClass: "icon-minus blue"},
+					},
 				},
 			},
 		},
-		&Deployments{
-			&Deployment{
-				Name: "legacy / sandbox / aws - cf-sandbox-r5",
-				Releases: []NameVersion{
-					NameVersion{Name: "cf", Version: "211", DisplayClass: "icon-arrow-down red"},
-					NameVersion{Name: "cf-sensu-client", Version: "1", DisplayClass: "icon-minus blue"},
-				},
-				Stemcells: []NameVersion{
-					NameVersion{Name: "aws", Version: "3033", DisplayClass: "icon-minus blue"},
-				},
-			},
-			&Deployment{
-				Name: "legacy / dev / aws - cf-devprod-r2",
-				Releases: []NameVersion{
-					NameVersion{Name: "cf", Version: "211", DisplayClass: "icon-minus blue"},
-					NameVersion{Name: "cf-sensu-client", Version: "1", DisplayClass: "icon-minus blue"},
-				},
-				Stemcells: []NameVersion{
-					NameVersion{Name: "aws", Version: "3033", DisplayClass: "icon-minus blue"},
+		&Tier{
+			&Column{
+				&Deployment{
+					Name: "legacy / sandbox / aws - cf-sandbox-r5",
+					Releases: []NameVersion{
+						NameVersion{Name: "cf", Version: "211", DisplayClass: "icon-arrow-down red"},
+						NameVersion{Name: "cf-sensu-client", Version: "1", DisplayClass: "icon-minus blue"},
+					},
+					Stemcells: []NameVersion{
+						NameVersion{Name: "aws", Version: "3033", DisplayClass: "icon-minus blue"},
+					},
 				},
 			},
-			&Deployment{
-				Name: "legacy / prod / aws - prod-cloudfoundry",
-				Releases: []NameVersion{
-					NameVersion{Name: "cf", Version: "205", DisplayClass: "icon-arrow-down red"},
-					NameVersion{Name: "cf-sensu-client", Version: "1", DisplayClass: "icon-minus blue"},
+			&Column{
+				&Deployment{
+					Name: "legacy / dev / aws - cf-devprod-r2",
+					Releases: []NameVersion{
+						NameVersion{Name: "cf", Version: "211", DisplayClass: "icon-minus blue"},
+						NameVersion{Name: "cf-sensu-client", Version: "1", DisplayClass: "icon-minus blue"},
+					},
+					Stemcells: []NameVersion{
+						NameVersion{Name: "aws", Version: "3033", DisplayClass: "icon-minus blue"},
+					},
 				},
-				Stemcells: []NameVersion{
-					NameVersion{Name: "aws", Version: "3000", DisplayClass: "icon-arrow-down red"},
+			},
+			&Column{
+				&Deployment{
+					Name: "legacy / prod / aws - prod-cloudfoundry",
+					Releases: []NameVersion{
+						NameVersion{Name: "cf", Version: "205", DisplayClass: "icon-arrow-down red"},
+						NameVersion{Name: "cf-sensu-client", Version: "1", DisplayClass: "icon-minus blue"},
+					},
+					Stemcells: []NameVersion{
+						NameVersion{Name: "aws", Version: "3000", DisplayClass: "icon-arrow-down red"},
+					},
 				},
 			},
 		},

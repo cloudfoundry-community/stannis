@@ -81,6 +81,7 @@
 			<div class="row-fluid">
 				{{range .}}
 				<div class="box black span4" onTablet="span6" onDesktop="span4">
+					{{range .}}
 					<div class="box-header">
 						<h2><i class="halflings-icon white list"></i> {{.Name}}</h2>
 					</div>
@@ -106,6 +107,7 @@
 							{{end}}
 						</ul>
 					</div>
+					{{end}}
 				</div><!--/span-->
 
 				{{end}}
