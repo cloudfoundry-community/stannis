@@ -73,7 +73,7 @@ type DisplayNameVersion struct {
 }
 
 // NewDeployment converts BOSH deployment information into a deployment view for the dashboard
-func NewDeployment(configTier config.Tier, configSlot config.Slot, boshDeployment upload.UploadedDeploymentFromBOSH) (deployment *Deployment) {
+func NewDeployment(configTier config.Tier, configSlot config.Slot, boshDeployment upload.DeploymentFromBOSH) (deployment *Deployment) {
 	tierName := configTier.Name
 	slotName := configSlot.Name
 	cpi := "no-stemcell"

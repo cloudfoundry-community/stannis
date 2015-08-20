@@ -38,7 +38,7 @@ func dashboard(r render.Render) {
 	r.HTML(200, "dashboard", tiers)
 }
 
-func updateLatestDeployments(fromBOSH upload.UploadedFromBOSH) string {
+func updateLatestDeployments(fromBOSH upload.FromBOSH) string {
 	db[fromBOSH.UUID] = fromBOSH
 	return fmt.Sprintf("%v\n", db)
 }
@@ -60,23 +60,22 @@ func runAgent(c *cli.Context) {
 		fmt.Println("Could not fetch BOSH info")
 		return
 	}
-	fmt.Println("Director")
-	fmt.Printf("  Name       %s\n", info.Name)
-	fmt.Printf("  URL        %s\n", info.URL)
-	fmt.Printf("  Version    %s\n", info.Version)
-	fmt.Printf("  User       %s\n", info.User)
-	fmt.Printf("  UUID       %s\n", info.UUID)
-	fmt.Printf("  CPI        %s\n", info.CPI)
 
-	deployments, apiResponse := repo.GetDeployments()
+	boshDeployments, apiResponse := repo.GetDeployments()
 	if apiResponse.IsNotSuccessful() {
 		fmt.Println("Could not fetch BOSH deployments")
 		return
 	}
 
-	for _, deployment := range deployments {
-		fmt.Println(*deployment)
+	uploadData := upload.ToBOSH{
+		Name:        info.Name,
+		UUID:        info.UUID,
+		Version:     info.Version,
+		CPI:         info.CPI,
+		Deployments: boshDeployments,
 	}
+
+	fmt.Println(uploadData)
 }
 
 func runWebserver(c *cli.Context) {
@@ -91,7 +90,7 @@ func runWebserver(c *cli.Context) {
 	m := martini.Classic()
 	m.Use(render.Renderer())
 	m.Get("/", dashboard)
-	m.Post("/upload", binding.Json(upload.UploadedFromBOSH{}), updateLatestDeployments)
+	m.Post("/upload", binding.Json(upload.FromBOSH{}), updateLatestDeployments)
 	m.Run()
 }
 

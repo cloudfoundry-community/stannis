@@ -8,7 +8,7 @@ import (
 )
 
 // DeploymentsPerBOSH allows a BOSH's deployments to be indexed by BOSH UUID
-type DeploymentsPerBOSH map[string]upload.UploadedFromBOSH
+type DeploymentsPerBOSH map[string]upload.FromBOSH
 
 // NewDeploymentsPerBOSH constructs a new mapping of Deployments to each BOSH
 func NewDeploymentsPerBOSH() DeploymentsPerBOSH {
@@ -22,7 +22,7 @@ func (db DeploymentsPerBOSH) LoadFixtureData(path string) (err error) {
 		return
 	}
 
-	deployments := &upload.UploadedFromBOSH{}
+	deployments := &upload.FromBOSH{}
 	err = json.Unmarshal(bytes, &deployments)
 
 	db[deployments.UUID] = *deployments
