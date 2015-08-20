@@ -38,7 +38,7 @@ func TestScenarioData() *Tiers {
 				&Slot{
 					Deployments: Deployments{
 						&Deployment{
-							Name: "dc / sandbox / vsphere - cf-vsph-sandbox",
+							Name: "dc / sandbox - cf-vsph-sandbox",
 							Releases: []DisplayNameVersion{
 								DisplayNameVersion{Name: "cf", Version: "215", DisplayClass: "icon-arrow-down red"},
 								DisplayNameVersion{Name: "cf-haproxy", Version: "5", DisplayClass: "icon-minus blue"},
@@ -61,7 +61,7 @@ func TestScenarioData() *Tiers {
 				&Slot{
 					Deployments: Deployments{
 						&Deployment{
-							Name: "aws / production / aws - cf-aws-prod",
+							Name: "aws / production - cf-aws-prod",
 							Releases: []DisplayNameVersion{
 								DisplayNameVersion{Name: "cf", Version: "211", DisplayClass: "icon-arrow-down red"},
 								DisplayNameVersion{Name: "cf-haproxy", Version: "5", DisplayClass: "icon-minus blue"},

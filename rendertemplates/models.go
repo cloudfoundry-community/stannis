@@ -2,7 +2,6 @@ package rendertemplates
 
 import (
 	"fmt"
-	"regexp"
 
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/config"
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/upload"
@@ -76,15 +75,8 @@ type DisplayNameVersion struct {
 func NewDeployment(configTier config.Tier, configSlot config.Slot, boshDeployment upload.DeploymentFromBOSH) (deployment *Deployment) {
 	tierName := configTier.Name
 	slotName := configSlot.Name
-	cpi := "no-stemcell"
-	if len(boshDeployment.Stemcells) > 0 {
-		cpi = cpiFromStemcell(boshDeployment.Stemcells[0].Name)
-	}
 
-	name := fmt.Sprintf("%s / %s / %s - %s", tierName, slotName, cpi, boshDeployment.Name)
-	if slotName == cpi {
-		name = fmt.Sprintf("%s / %s - %s", tierName, slotName, boshDeployment.Name)
-	}
+	name := fmt.Sprintf("%s / %s - %s", tierName, slotName, boshDeployment.Name)
 
 	releases := make([]DisplayNameVersion, len(boshDeployment.Releases))
 	for releaseIndex := range releases {
@@ -112,28 +104,4 @@ func NewDeployment(configTier config.Tier, configSlot config.Slot, boshDeploymen
 		Stemcells: stemcells,
 	}
 	return
-}
-
-func cpiFromStemcell(stemcellName string) string {
-	match, _ := regexp.MatchString("boshlite", stemcellName)
-	if match {
-		return "bosh-lite"
-	}
-	match, _ = regexp.MatchString("vsphere", stemcellName)
-	if match {
-		return "vsphere"
-	}
-	match, _ = regexp.MatchString("aws", stemcellName)
-	if match {
-		return "aws"
-	}
-	match, _ = regexp.MatchString("openstack", stemcellName)
-	if match {
-		return "openstack"
-	}
-	match, _ = regexp.MatchString("vcloud", stemcellName)
-	if match {
-		return "vcloud"
-	}
-	return "unknown-stemcell"
 }
