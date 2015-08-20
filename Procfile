@@ -1,1 +1,1 @@
-web: bosh-pipeline-dashboard webserver
+web: stannis webserver

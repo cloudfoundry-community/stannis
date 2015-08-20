@@ -3,8 +3,8 @@ package rendertemplates
 import (
 	"fmt"
 
-	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/config"
-	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/upload"
+	"github.com/cloudfoundry-community/stannis/config"
+	"github.com/cloudfoundry-community/stannis/upload"
 )
 
 // The PipelinedDeployments struct is used by the dashboard template to render/display

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/upload"
+	"github.com/cloudfoundry-community/stannis/upload"
 )
 
 // DeploymentsPerBOSH allows a BOSH's deployments to be indexed by BOSH UUID

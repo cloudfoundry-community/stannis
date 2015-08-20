@@ -8,13 +8,13 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/config"
-	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/data"
-	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/rendertemplates"
-	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/upload"
 	"github.com/cloudfoundry-community/gogobosh"
 	"github.com/cloudfoundry-community/gogobosh/api"
 	"github.com/cloudfoundry-community/gogobosh/net"
+	"github.com/cloudfoundry-community/stannis/config"
+	"github.com/cloudfoundry-community/stannis/data"
+	"github.com/cloudfoundry-community/stannis/rendertemplates"
+	"github.com/cloudfoundry-community/stannis/upload"
 	"github.com/codegangsta/cli"
 	"github.com/codegangsta/martini-contrib/binding"
 	"github.com/go-martini/martini"
@@ -114,7 +114,7 @@ func runWebserver(c *cli.Context) {
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "bosh-pipeline-dashboard"
+	app.Name = "stannis"
 	app.Version = "0.1.0"
 	app.Usage = "What deployments are running in which BOSH?"
 	app.Commands = []cli.Command{

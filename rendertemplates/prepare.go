@@ -3,8 +3,8 @@ package rendertemplates
 import (
 	"regexp"
 
-	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/config"
-	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/data"
+	"github.com/cloudfoundry-community/stannis/config"
+	"github.com/cloudfoundry-community/stannis/data"
 )
 
 // PrepareRenderData constructs new renderdata based on pipeline config + latest BOSH deployments data

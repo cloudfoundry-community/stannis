@@ -1,9 +1,9 @@
 package rendertemplates_test
 
 import (
-	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/config"
-	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/data"
-	. "github.com/cloudfoundry-community/bosh-pipeline-dashboard/rendertemplates"
+	"github.com/cloudfoundry-community/stannis/config"
+	"github.com/cloudfoundry-community/stannis/data"
+	. "github.com/cloudfoundry-community/stannis/rendertemplates"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
