@@ -25,7 +25,7 @@ var _ = Describe("Prepare data for templates", func() {
 		db.LoadFixtureData("fixtures/deployments-uuid-vsphere-bosh-sandbox.json")
 
 		var err error
-		pipelineConfig, err = config.LoadConfigFromYAMLFile("../config/config.example.yml")
+		pipelineConfig, err = config.LoadConfigFromYAMLFile("../config/webserver.config.example.yml")
 		Expect(err).NotTo(HaveOccurred())
 
 		renderdata = PrepareRenderData(pipelineConfig, db)

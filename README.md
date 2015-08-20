@@ -16,7 +16,7 @@ This can make visualizing a pipeline of deployments easier.
 Running dashboard
 -----------------
 
-Create a YAML configuration file to describe the pipelines of deployments. See `config/config.example.yml` for the schema and examples.
+Create a YAML configuration file to describe the pipelines of deployments. See `config/webserver.config.example.yml` for the schema and examples.
 
 ```
 go run main.go -pipelines config.yml
@@ -40,7 +40,7 @@ deployments=$(curl -ks -u admin:admin https://10.20.30.40:25555/deployments)
 curl -X POST http://localhost:3000/upload -d "{\"uuid\": \"the-uuid\", \"name\": \"bosh-lite\", \"deployments\": $deployments}"
 ```
 
-If you are running the server with the example config (`go run main.go -pipelines config/config.example.yml`) then you can upload the example/fixtures data:
+If you are running the server with the example config (`go run main.go -pipelines config/webserver.config.example.yml`) then you can upload the example/fixtures data:
 
 ```
 ./bin/upload_fixtures

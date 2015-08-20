@@ -29,6 +29,7 @@ type Slot struct {
 	Name   string `yaml:"name"`
 	Filter struct {
 		BoshUUID             string `yaml:"bosh_uuid"`
+		TargetURI            string `yaml:"target_uri"`
 		DeploymentNameRegexp string `yaml:"deployment_name_regexp"`
 	} `yaml:"filter"`
 }

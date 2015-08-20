@@ -43,6 +43,7 @@ func dashboard(r render.Render) {
 
 func updateLatestDeployments(fromBOSH upload.FromBOSH) string {
 	reallyUUID := fmt.Sprintf("%s-%s", fromBOSH.TargetURI, fromBOSH.UUID)
+	fmt.Println("Received from", reallyUUID)
 	db[reallyUUID] = fromBOSH
 	return fmt.Sprintf("%v\n", db)
 }

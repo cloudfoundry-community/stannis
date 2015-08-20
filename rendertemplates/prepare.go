@@ -44,8 +44,16 @@ func (renderdata *RenderData) DiscoverDeploymentsForSlot(db data.DeploymentsPerB
 					deployments = append(deployments, NewDeployment(configTier, configSlot, boshDeployment))
 				}
 			}
+			// TODO: also allow filter via TargetURI
 			if !match && configSlot.Filter.BoshUUID != "" {
 				if boshDeployments.UUID == configSlot.Filter.BoshUUID {
+					match = true
+					deployments = append(deployments, NewDeployment(configTier, configSlot, boshDeployment))
+				}
+			}
+			if !match && configSlot.Filter.TargetURI != "" {
+				if boshDeployments.TargetURI == configSlot.Filter.TargetURI {
+					match = true
 					deployments = append(deployments, NewDeployment(configTier, configSlot, boshDeployment))
 				}
 			}
