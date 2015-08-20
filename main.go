@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/config"
@@ -76,6 +79,18 @@ func runAgent(c *cli.Context) {
 	}
 
 	fmt.Println(uploadData)
+
+	b, err := json.Marshal(uploadData)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	uploadEndpoint := fmt.Sprintf("%s/upload", agentConfig.WebserverTarget)
+	resp, err := http.Post(uploadEndpoint, "application/json", bytes.NewReader(b))
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(resp)
 }
 
 func runWebserver(c *cli.Context) {
