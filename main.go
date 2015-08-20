@@ -42,7 +42,8 @@ func dashboard(r render.Render) {
 }
 
 func updateLatestDeployments(fromBOSH upload.FromBOSH) string {
-	db[fromBOSH.UUID] = fromBOSH
+	reallyUUID := fmt.Sprintf("%s-%s", fromBOSH.TargetURI, fromBOSH.UUID)
+	db[reallyUUID] = fromBOSH
 	return fmt.Sprintf("%v\n", db)
 }
 
@@ -72,6 +73,7 @@ func runAgent(c *cli.Context) {
 
 	uploadData := upload.ToBOSH{
 		Name:        info.Name,
+		TargetURI:   agentConfig.BOSHTarget,
 		UUID:        info.UUID,
 		Version:     info.Version,
 		CPI:         info.CPI,
