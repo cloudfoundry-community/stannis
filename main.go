@@ -68,6 +68,15 @@ func runAgent(c *cli.Context) {
 	fmt.Printf("  UUID       %s\n", info.UUID)
 	fmt.Printf("  CPI        %s\n", info.CPI)
 
+	deployments, apiResponse := repo.GetDeployments()
+	if apiResponse.IsNotSuccessful() {
+		fmt.Println("Could not fetch BOSH deployments")
+		return
+	}
+
+	for _, deployment := range deployments {
+		fmt.Println(*deployment)
+	}
 }
 
 func runWebserver(c *cli.Context) {
