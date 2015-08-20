@@ -9,6 +9,9 @@ import (
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/data"
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/rendertemplates"
 	"github.com/cloudfoundry-community/bosh-pipeline-dashboard/upload"
+	"github.com/cloudfoundry-community/gogobosh"
+	"github.com/cloudfoundry-community/gogobosh/api"
+	"github.com/cloudfoundry-community/gogobosh/net"
 	"github.com/codegangsta/cli"
 	"github.com/codegangsta/martini-contrib/binding"
 	"github.com/go-martini/martini"
@@ -48,6 +51,22 @@ func runAgent(c *cli.Context) {
 		log.Fatalln(err)
 	}
 	fmt.Println(agentConfig)
+
+	director := gogobosh.NewDirector(agentConfig.BOSHTarget, agentConfig.BOSHUsername, agentConfig.BOSHPassword)
+	repo := api.NewBoshDirectorRepository(&director, net.NewDirectorGateway())
+
+	info, apiResponse := repo.GetInfo()
+	if apiResponse.IsNotSuccessful() {
+		fmt.Println("Could not fetch BOSH info")
+		return
+	}
+	fmt.Println("Director")
+	fmt.Printf("  Name       %s\n", info.Name)
+	fmt.Printf("  URL        %s\n", info.URL)
+	fmt.Printf("  Version    %s\n", info.Version)
+	fmt.Printf("  User       %s\n", info.User)
+	fmt.Printf("  UUID       %s\n", info.UUID)
+	fmt.Printf("  CPI        %s\n", info.CPI)
 
 }
 
