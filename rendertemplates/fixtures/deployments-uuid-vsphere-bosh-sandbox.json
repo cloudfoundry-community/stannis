@@ -5,8 +5,8 @@
   "deployments": [
     {"name":"cf-vsph-sandbox",
       "releases":[
-        {"name":"cf","version":"215"},
-        {"name":"cf-haproxy","version":"5"}],
+        {"name":"concourse","version":"0.60.1"},
+        {"name":"garden-linux","version":"0.296.0"}],
       "stemcells":[
         {"name":"bosh-vsphere-esxi-ubuntu-trusty-go_agent","version":"3048"}],
       "cloud_config":"none"}]
