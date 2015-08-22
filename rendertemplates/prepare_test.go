@@ -11,13 +11,13 @@ import (
 
 var _ = Describe("Prepare data for templates", func() {
 	var (
-		pipelineConfig *config.PipelinesConfig
-		expectedTiers  Tiers
-		db             data.DeploymentsPerBOSH
-		renderdata     *RenderData
+		pipelineConfig     *config.PipelinesConfig
+		expectedRenderData RenderData
+		db                 data.DeploymentsPerBOSH
+		renderdata         *RenderData
 	)
 	BeforeEach(func() {
-		expectedTiers = *TestScenarioData()
+		expectedRenderData = *TestScenarioData()
 		db = data.NewDeploymentsPerBOSH()
 
 		db.LoadFixtureData("fixtures/deployments-uuid-some-bosh-lite.json")
@@ -28,18 +28,18 @@ var _ = Describe("Prepare data for templates", func() {
 		pipelineConfig, err = config.LoadConfigFromYAMLFile("../config/webserver.config.example.yml")
 		Expect(err).NotTo(HaveOccurred())
 
-		renderdata = PrepareRenderData(pipelineConfig, db)
+		renderdata = PrepareRenderData(pipelineConfig, db, "")
 	})
 
 	It("has tiers", func() {
-		Expect(len(renderdata.Tiers)).To(Equal(len(expectedTiers)))
+		Expect(len(renderdata.Tiers)).To(Equal(len(expectedRenderData.Tiers)))
 	})
 
 	It("has slots in tier", func() {
 		for tierIndex := range renderdata.Tiers {
 			renderTier := renderdata.Tiers[tierIndex]
 			Expect(renderTier).ToNot(BeNil())
-			expectedTier := *expectedTiers[tierIndex]
+			expectedTier := *expectedRenderData.Tiers[tierIndex]
 			Expect(expectedTier).ToNot(BeNil())
 
 			Expect(renderTier.Name).To(Equal(expectedTier.Name))

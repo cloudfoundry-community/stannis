@@ -29,10 +29,16 @@ func init() {
 	db = data.NewDeploymentsPerBOSH()
 }
 
-func dashboard(r render.Render) {
-	renderData := rendertemplates.PrepareRenderData(webserverConfig, db)
+func dashboardShowAll(r render.Render) {
+	renderData := rendertemplates.PrepareRenderData(webserverConfig, db, "")
 	// renderData := rendertemplates.TestScenarioData()
+	r.HTML(200, "dashboard", renderData)
+}
 
+func dashboardFilterByTag(params martini.Params, r render.Render) {
+	filterTag := params["filter"]
+	renderData := rendertemplates.PrepareRenderData(webserverConfig, db, filterTag)
+	// renderData := rendertemplates.TestScenarioData()
 	r.HTML(200, "dashboard", renderData)
 }
 
@@ -107,7 +113,8 @@ func runWebserver(c *cli.Context) {
 	m := martini.Classic()
 	m.Use(render.Renderer())
 	m.Use(auth.Basic(webserverConfig.Auth.Username, webserverConfig.Auth.Password))
-	m.Get("/", dashboard)
+	m.Get("/", dashboardShowAll)
+	m.Get("/tag/:filter", dashboardFilterByTag)
 	m.Post("/upload", binding.Json(upload.FromBOSH{}), updateLatestDeployments)
 	m.Run()
 }

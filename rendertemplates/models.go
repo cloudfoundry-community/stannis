@@ -75,6 +75,7 @@ type DisplayNameVersion struct {
 // FilterTag is to display a clickable tag that filters results
 type FilterTag struct {
 	Name      string
+	Tag       string
 	IconClass string
 }
 

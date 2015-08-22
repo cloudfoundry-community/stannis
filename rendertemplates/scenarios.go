@@ -4,8 +4,8 @@ package rendertemplates
 func TestScenarioData() *RenderData {
 	return &RenderData{
 		FilterTags: []FilterTag{
-			{"cf", "icon-cloud"},
-			{"cf-haproxy", "icon-cloud"},
+			{"cf", "cf", "icon-cloud"},
+			{"cf-haproxy", "cf-haproxy", "icon-cloud"},
 		},
 		Tiers: Tiers{
 			&Tier{
