@@ -16,20 +16,21 @@ import (
 	"github.com/cloudfoundry-community/stannis/rendertemplates"
 	"github.com/cloudfoundry-community/stannis/upload"
 	"github.com/codegangsta/cli"
+	"github.com/codegangsta/martini-contrib/auth"
 	"github.com/codegangsta/martini-contrib/binding"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
 )
 
 var db data.DeploymentsPerBOSH
-var pipelinesConfig *config.PipelinesConfig
+var webserverConfig *config.PipelinesConfig
 
 func init() {
 	db = data.NewDeploymentsPerBOSH()
 }
 
 func dashboard(r render.Render) {
-	renderdata := rendertemplates.PrepareRenderData(pipelinesConfig, db)
+	renderdata := rendertemplates.PrepareRenderData(webserverConfig, db)
 	tiers := renderdata.Tiers
 	fmt.Println(renderdata.Tiers[0].Slots[0])
 	fmt.Println(renderdata.Tiers[0].Slots[0].Deployments)
@@ -99,14 +100,14 @@ func runAgent(c *cli.Context) {
 func runWebserver(c *cli.Context) {
 	pipelinesConfigPath := c.String("config")
 	var err error
-	pipelinesConfig, err = config.LoadConfigFromYAMLFile(pipelinesConfigPath)
+	webserverConfig, err = config.LoadConfigFromYAMLFile(pipelinesConfigPath)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	fmt.Println(pipelinesConfig)
-	// fmt.Printf("%v\n", config.Tiers[0].Columns[0].Filter)
+
 	m := martini.Classic()
 	m.Use(render.Renderer())
+	m.Use(auth.Basic(webserverConfig.Auth.Username, webserverConfig.Auth.Password))
 	m.Get("/", dashboard)
 	m.Post("/upload", binding.Json(upload.FromBOSH{}), updateLatestDeployments)
 	m.Run()

@@ -8,6 +8,10 @@ import (
 
 // PipelinesConfig describes how pipelines will be displayed, how to allocate discovered deployments
 type PipelinesConfig struct {
+	Auth struct {
+		Username string `yaml:"username"`
+		Password string `yaml:"password"`
+	} `yaml:"auth"`
 	Pipelines []struct {
 		Name   string `yaml:"name"`
 		Tag    string `yaml:"tag"`
