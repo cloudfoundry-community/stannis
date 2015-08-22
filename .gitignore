@@ -1,3 +1,2 @@
 gin-bin
-config.yml
-config.agent.yml
+config*.yml
