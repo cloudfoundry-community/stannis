@@ -3,6 +3,7 @@ package data
 import (
 	"encoding/json"
 	"io/ioutil"
+	"sort"
 
 	"github.com/cloudfoundry-community/stannis/upload"
 )
@@ -26,5 +27,30 @@ func (db DeploymentsPerBOSH) LoadFixtureData(path string) (err error) {
 	err = json.Unmarshal(bytes, &deployments)
 
 	db[deployments.UUID] = *deployments
+	return
+}
+
+// deploymentsPerRelease returns a {releaseName: []upload.DeploymentFromBOSH} mapping
+func (db DeploymentsPerBOSH) deploymentsPerRelease() (result map[string][]upload.FromBOSH) {
+	result = map[string][]upload.FromBOSH{}
+	for _, bosh := range db {
+		for _, deployment := range bosh.Deployments {
+			for _, release := range deployment.Releases {
+				if result[release.Name] == nil {
+					result[release.Name] = []upload.FromBOSH{}
+				}
+			}
+		}
+	}
+	return
+}
+
+// ReleasesNames returns the names of the BOSH releases used by deployments
+func (db DeploymentsPerBOSH) ReleasesNames() (names []string) {
+	deploymentsPerRelease := db.deploymentsPerRelease()
+	for release := range deploymentsPerRelease {
+		names = append(names, release)
+	}
+	sort.Strings(names)
 	return
 }
