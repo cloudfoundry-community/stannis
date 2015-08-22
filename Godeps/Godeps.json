@@ -22,6 +22,11 @@
 			"Rev": "bbd489b35fd7eac9aaf442e5671ab21cdd972926"
 		},
 		{
+			"ImportPath": "github.com/codegangsta/martini-contrib/auth",
+			"Comment": "v0.1-159-g8ce6181",
+			"Rev": "8ce6181c2609699e4c7cd30994b76a850a9cdadc"
+		},
+		{
 			"ImportPath": "github.com/codegangsta/martini-contrib/binding",
 			"Comment": "v0.1-159-g8ce6181",
 			"Rev": "8ce6181c2609699e4c7cd30994b76a850a9cdadc"
