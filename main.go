@@ -32,11 +32,6 @@ func init() {
 func dashboard(r render.Render) {
 	renderdata := rendertemplates.PrepareRenderData(webserverConfig, db)
 	tiers := renderdata.Tiers
-	fmt.Println(renderdata.Tiers[0].Slots[0])
-	fmt.Println(renderdata.Tiers[0].Slots[0].Deployments)
-	fmt.Println(renderdata.Tiers[1].Slots[0])
-	fmt.Println(renderdata.Tiers[1].Slots[0].Deployments)
-
 	// tiers := rendertemplates.TestScenarioData()
 
 	r.HTML(200, "dashboard", tiers)
