@@ -92,7 +92,7 @@ func runAgent(c *cli.Context) {
 	uploadEndpoint := fmt.Sprintf("%s/upload", agentConfig.WebserverTarget)
 
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", uploadEndpoint, bytes.NewReader(b))
+	req, err := http.NewRequest("POST", uploadEndpoint, bytes.NewReader(b))
 	req.SetBasicAuth(agentConfig.WebserverUsername, agentConfig.WebserverPassword)
 	resp, err := client.Do(req)
 
