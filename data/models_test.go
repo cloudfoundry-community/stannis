@@ -19,6 +19,6 @@ var _ = Describe("Data", func() {
 	})
 
 	It("finds releases", func() {
-		Expect(db.ReleasesNames()).To(Equal([]string{"cf", "cf-haproxy"}))
+		Expect(db.ReleaseNames()).To(Equal([]string{"cf", "cf-haproxy"}))
 	})
 })

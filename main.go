@@ -30,11 +30,10 @@ func init() {
 }
 
 func dashboard(r render.Render) {
-	renderdata := rendertemplates.PrepareRenderData(webserverConfig, db)
-	tiers := renderdata.Tiers
-	// tiers := rendertemplates.TestScenarioData()
+	renderData := rendertemplates.PrepareRenderData(webserverConfig, db)
+	// renderData := rendertemplates.TestScenarioData()
 
-	r.HTML(200, "dashboard", tiers)
+	r.HTML(200, "dashboard", renderData)
 }
 
 func updateLatestDeployments(fromBOSH upload.FromBOSH) string {

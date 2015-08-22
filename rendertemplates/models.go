@@ -32,8 +32,9 @@ import (
 
 // RenderData is a collection of deployments in the Director by tiers/pipelines
 type RenderData struct {
-	Config *config.PipelinesConfig
-	Tiers  Tiers
+	Config     *config.PipelinesConfig
+	Tiers      Tiers
+	FilterTags []FilterTag
 }
 
 // Tiers is a collection of deployments in the Director by tiers/pipelines
@@ -69,6 +70,12 @@ type DisplayNameVersion struct {
 	Name         string
 	Version      string
 	DisplayClass string
+}
+
+// FilterTag is to display a clickable tag that filters results
+type FilterTag struct {
+	Name      string
+	IconClass string
 }
 
 // NewDeployment converts BOSH deployment information into a deployment view for the dashboard

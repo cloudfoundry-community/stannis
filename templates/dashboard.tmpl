@@ -57,26 +57,13 @@
 						<li><a href="/"><i class="icon-bar-chart"></i><span class="hidden-tablet"> Dashboard</span></a></li>
 					</ul>
 				</div>
+				{{range .FilterTags}}
 				<div class="nav-collapse sidebar-nav">
 					<ul class="nav nav-tabs nav-stacked">
-						<li><a href="/"><i class="icon-cloud"></i><span class="hidden-tablet"> Cloud Foundry</span></a></li>
+						<li><a href="/"><i class="{{.IconClass}}"></i><span class="hidden-tablet"> {{.Name}}</span></a></li>
 					</ul>
 				</div>
-				<div class="nav-collapse sidebar-nav">
-					<ul class="nav nav-tabs nav-stacked">
-						<li><a href="/"><i class="icon-database"></i><span class="hidden-tablet"> RDPG</span></a></li>
-					</ul>
-				</div>
-				<div class="nav-collapse sidebar-nav">
-					<ul class="nav nav-tabs nav-stacked">
-						<li><a href="/"><i class="icon-align-justify"></i><span class="hidden-tablet"> Logsearch</span></a></li>
-					</ul>
-				</div>
-				<div class="nav-collapse sidebar-nav">
-					<ul class="nav nav-tabs nav-stacked">
-						<li><a href="/"><i class="icon-plane"></i><span class="hidden-tablet"> Concourse</span></a></li>
-					</ul>
-				</div>
+				{{end}}
 			</div>
 			<!-- end: Main Menu -->
 
@@ -100,7 +87,7 @@
 				<li><a href="#">Dashboard</a></li>
 			</ul>
 
-			{{range .}}
+			{{range .Tiers}}
 			<div class="row-fluid">
 				{{range .Slots}}
 				<div class="box black span4" onTablet="span6" onDesktop="span4">

@@ -10,9 +10,11 @@ import (
 // PrepareRenderData constructs new renderdata based on pipeline config + latest BOSH deployments data
 func PrepareRenderData(config *config.PipelinesConfig, db data.DeploymentsPerBOSH) *RenderData {
 	tiers := make([]*Tier, len(config.Tiers))
+	filterTags := filterTagsForReleaseNames(db.ReleaseNames())
 	renderdata := &RenderData{
-		Config: config,
-		Tiers:  tiers,
+		Config:     config,
+		FilterTags: filterTags,
+		Tiers:      tiers,
 	}
 	for tierIndex, configTier := range config.Tiers {
 		slots := make([]*Slot, len(configTier.Slots))
@@ -60,4 +62,12 @@ func (renderdata *RenderData) DiscoverDeploymentsForSlot(db data.DeploymentsPerB
 		}
 	}
 	return deployments
+}
+
+func filterTagsForReleaseNames(releaseNames []string) (tags []FilterTag) {
+	tags = make([]FilterTag, len(releaseNames))
+	for i, name := range releaseNames {
+		tags[i] = FilterTag{name, "icon-cloud"}
+	}
+	return
 }

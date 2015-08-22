@@ -45,8 +45,8 @@ func (db DeploymentsPerBOSH) deploymentsPerRelease() (result map[string][]upload
 	return
 }
 
-// ReleasesNames returns the names of the BOSH releases used by deployments
-func (db DeploymentsPerBOSH) ReleasesNames() (names []string) {
+// ReleaseNames returns the names of the BOSH releases used by deployments
+func (db DeploymentsPerBOSH) ReleaseNames() (names []string) {
 	deploymentsPerRelease := db.deploymentsPerRelease()
 	for release := range deploymentsPerRelease {
 		names = append(names, release)
