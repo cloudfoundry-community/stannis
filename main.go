@@ -82,11 +82,11 @@ func runAgent(c *cli.Context) {
 		Deployments: boshDeployments,
 	}
 
-	fmt.Println(uploadData)
+	fmt.Println("Data to upload" uploadData)
 
 	b, err := json.Marshal(uploadData)
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatalln("MARSHAL ERROR", err)
 	}
 
 	uploadEndpoint := fmt.Sprintf("%s/upload", agentConfig.WebserverTarget)
@@ -97,7 +97,7 @@ func runAgent(c *cli.Context) {
 	resp, err := client.Do(req)
 
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatalln("POST ERROR", err)
 	}
 	fmt.Println(resp)
 }
