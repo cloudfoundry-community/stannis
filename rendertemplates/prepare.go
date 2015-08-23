@@ -24,7 +24,7 @@ func PrepareRenderData(config *config.PipelinesConfig, db data.DeploymentsPerBOS
 		}
 
 		for slotIndex, configSlot := range configTier.Slots {
-			deployments := renderdata.DiscoverDeploymentsForSlot(db, configTier, configSlot)
+			deployments := renderdata.DiscoverDeploymentsForSlot(db, configTier, configSlot, filterByTag)
 			slots[slotIndex] = &Slot{
 				Deployments: deployments,
 			}
@@ -35,7 +35,7 @@ func PrepareRenderData(config *config.PipelinesConfig, db data.DeploymentsPerBOS
 
 // DiscoverDeploymentsForSlot searches through the database of known BOSH deployments for those
 // that should appear in a configured tier/slot
-func (renderdata *RenderData) DiscoverDeploymentsForSlot(db data.DeploymentsPerBOSH, configTier config.Tier, configSlot config.Slot) Deployments {
+func (renderdata *RenderData) DiscoverDeploymentsForSlot(db data.DeploymentsPerBOSH, configTier config.Tier, configSlot config.Slot, filterTag string) Deployments {
 	var deployments Deployments
 	for _, boshDeployments := range db {
 		for _, boshDeployment := range boshDeployments.Deployments {
@@ -43,20 +43,29 @@ func (renderdata *RenderData) DiscoverDeploymentsForSlot(db data.DeploymentsPerB
 			if configSlot.Filter.DeploymentNameRegexp != "" {
 				match, _ = regexp.MatchString(configSlot.Filter.DeploymentNameRegexp, boshDeployment.Name)
 				if match {
-					deployments = append(deployments, NewDeployment(configTier, configSlot, boshDeployment))
+					deployment := NewDeployment(configTier, configSlot, boshDeployment)
+					if deployment.ContainsFilterTag(filterTag) {
+						deployments = append(deployments, deployment)
+					}
 				}
 			}
 			// TODO: also allow filter via TargetURI
 			if !match && configSlot.Filter.BoshUUID != "" {
 				if boshDeployments.UUID == configSlot.Filter.BoshUUID {
 					match = true
-					deployments = append(deployments, NewDeployment(configTier, configSlot, boshDeployment))
+					deployment := NewDeployment(configTier, configSlot, boshDeployment)
+					if deployment.ContainsFilterTag(filterTag) {
+						deployments = append(deployments, deployment)
+					}
 				}
 			}
 			if !match && configSlot.Filter.TargetURI != "" {
 				if boshDeployments.TargetURI == configSlot.Filter.TargetURI {
 					match = true
-					deployments = append(deployments, NewDeployment(configTier, configSlot, boshDeployment))
+					deployment := NewDeployment(configTier, configSlot, boshDeployment)
+					if deployment.ContainsFilterTag(filterTag) {
+						deployments = append(deployments, deployment)
+					}
 				}
 			}
 		}

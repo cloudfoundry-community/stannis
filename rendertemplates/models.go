@@ -113,3 +113,15 @@ func NewDeployment(configTier config.Tier, configSlot config.Slot, boshDeploymen
 	}
 	return
 }
+
+func (deployment *Deployment) ContainsFilterTag(filterTag string) bool {
+	if filterTag == "" {
+		return true
+	}
+	for _, release := range deployment.Releases {
+		if release.Name == filterTag {
+			return true
+		}
+	}
+	return false
+}
