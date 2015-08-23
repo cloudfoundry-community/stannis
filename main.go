@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/cloudfoundry-community/gogobosh"
 	"github.com/cloudfoundry-community/gogobosh/api"
@@ -91,9 +92,11 @@ func runAgent(c *cli.Context) {
 
 	uploadEndpoint := fmt.Sprintf("%s/upload", agentConfig.WebserverTarget)
 
-	client := &http.Client{}
+	timeout := time.Duration(5 * time.Second)
+	client := &http.Client{Timeout: timeout}
 	req, err := http.NewRequest("POST", uploadEndpoint, bytes.NewReader(b))
 	req.SetBasicAuth(agentConfig.WebserverUsername, agentConfig.WebserverPassword)
+
 	resp, err := client.Do(req)
 
 	if err != nil {
