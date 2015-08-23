@@ -82,7 +82,7 @@ func runAgent(c *cli.Context) {
 		Deployments: boshDeployments,
 	}
 
-	fmt.Println("Data to upload" uploadData)
+	fmt.Println("Data to upload", uploadData)
 
 	b, err := json.Marshal(uploadData)
 	if err != nil {
