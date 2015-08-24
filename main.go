@@ -96,7 +96,7 @@ func runAgent(c *cli.Context) {
 	timeout := time.Duration(5 * time.Second)
 	client := &http.Client{Transport: tr, Timeout: timeout}
 	req, err := http.NewRequest("POST", uploadEndpoint, bytes.NewReader(b))
-	req.Header.Add("Content-Type", "application/json")
+	req.Header.Set("Content-Type", "application/json")
 	req.SetBasicAuth(agentConfig.WebserverUsername, agentConfig.WebserverPassword)
 	req.Close = true
 
