@@ -92,15 +92,16 @@ func runAgent(c *cli.Context) {
 
 	uploadEndpoint := fmt.Sprintf("%s/upload", agentConfig.WebserverTarget)
 
+	tr := &http.Transport{DisableKeepAlives: true}
 	timeout := time.Duration(5 * time.Second)
-	client := &http.Client{Timeout: timeout}
+	client := &http.Client{Transport: tr, Timeout: timeout}
 	req, err := http.NewRequest("POST", uploadEndpoint, bytes.NewReader(b))
 	req.SetBasicAuth(agentConfig.WebserverUsername, agentConfig.WebserverPassword)
+	req.Close = true
 
 	resp, err := client.Do(req)
-	if resp != nil && resp.Request != nil {
-		fmt.Printf("%#v\n", resp.Request)
-		fmt.Printf("%#v\n", resp.Body)
+	if resp != nil {
+		defer resp.Body.Close()
 	}
 
 	if err != nil {
