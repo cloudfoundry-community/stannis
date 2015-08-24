@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -92,7 +93,10 @@ func runAgent(c *cli.Context) {
 
 	uploadEndpoint := fmt.Sprintf("%s/upload", agentConfig.WebserverTarget)
 
-	tr := &http.Transport{DisableKeepAlives: true}
+	tr := &http.Transport{
+		TLSClientConfig:   &tls.Config{InsecureSkipVerify: true},
+		DisableKeepAlives: true,
+	}
 	timeout := time.Duration(5 * time.Second)
 	client := &http.Client{Transport: tr, Timeout: timeout}
 	req, err := http.NewRequest("POST", uploadEndpoint, bytes.NewReader(b))
