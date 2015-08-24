@@ -98,6 +98,10 @@ func runAgent(c *cli.Context) {
 	req.SetBasicAuth(agentConfig.WebserverUsername, agentConfig.WebserverPassword)
 
 	resp, err := client.Do(req)
+	if resp.Request != nil {
+		fmt.Printf("%#v\n", resp.Request)
+		fmt.Printf("%#v\n", resp.Body)
+	}
 
 	if err != nil {
 		log.Fatalln("POST ERROR", err)
