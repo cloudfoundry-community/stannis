@@ -15,15 +15,7 @@ type ToBOSH struct {
 	Deployments models.Deployments `json:"deployments"`
 }
 
-// UploadGateway is the API for uploading deployments to Collector
-type UploadGateway interface {
-	UploadBulkDeployments()
-	UploadDeploymentNames()
-	UploadDeployments()
-}
-
 // Agent is the parent model for agent runtime behavior
 type Agent struct {
 	Config *config.AgentConfig
-	Upload UploadGateway
 }

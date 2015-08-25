@@ -22,7 +22,6 @@ import (
 func NewAgent(agentConfig *config.AgentConfig) (agent Agent) {
 	return Agent{
 		Config: agentConfig,
-		Upload: NewAgentUploadGateway(),
 	}
 }
 
@@ -113,13 +112,3 @@ func uploadDeploymentData(agentConfig *config.AgentConfig, endpoint string, body
 	fmt.Println(resp)
 
 }
-
-type AgentUploadGateway struct{}
-
-func NewAgentUploadGateway() AgentUploadGateway {
-	return AgentUploadGateway{}
-}
-
-func (gateway AgentUploadGateway) UploadBulkDeployments() {}
-func (gateway AgentUploadGateway) UploadDeploymentNames() {}
-func (gateway AgentUploadGateway) UploadDeployments()     {}
