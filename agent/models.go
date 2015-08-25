@@ -45,6 +45,9 @@ func FetchAndUpload(agentConfig *config.AgentConfig) {
 		return
 	}
 
+	if len(boshDeployments) > agentConfig.MaxBulkUploadSize {
+		log.Fatalln("Too many deployments to upload; working on a fix")
+	}
 	uploadData := ToBOSH{
 		Name:        info.Name,
 		TargetURI:   agentConfig.BOSHTarget,
