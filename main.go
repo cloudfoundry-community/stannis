@@ -94,15 +94,13 @@ func runAgent(c *cli.Context) {
 	uploadEndpoint := fmt.Sprintf("%s/upload", agentConfig.WebserverTarget)
 
 	tr := &http.Transport{
-		TLSClientConfig:   &tls.Config{InsecureSkipVerify: true},
-		DisableKeepAlives: true,
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
 	timeout := time.Duration(5 * time.Second)
 	client := &http.Client{Transport: tr, Timeout: timeout}
 	req, err := http.NewRequest("POST", uploadEndpoint, bytes.NewReader(b))
 	req.Header.Set("Content-Type", "application/json")
 	req.SetBasicAuth(agentConfig.WebserverUsername, agentConfig.WebserverPassword)
-	req.Close = true
 
 	resp, err := client.Do(req)
 	if resp != nil {
