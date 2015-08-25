@@ -17,9 +17,16 @@ import (
 	"github.com/cloudfoundry-community/stannis/config"
 )
 
+// NewAgent constructs Agent parent struct
+func NewAgent(agentConfig *config.AgentConfig) (agent Agent) {
+	return Agent{
+		Config: agentConfig,
+	}
+}
+
 // FetchAndUpload fetches deployments from BOSH and uploads to collector API
-func FetchAndUpload(agentConfig *config.AgentConfig) {
-	director := gogobosh.NewDirector(agentConfig.BOSHTarget, agentConfig.BOSHUsername, agentConfig.BOSHPassword)
+func (agent Agent) FetchAndUpload() {
+	director := gogobosh.NewDirector(agent.Config.BOSHTarget, agent.Config.BOSHUsername, agent.Config.BOSHPassword)
 	repo := api.NewBoshDirectorRepository(&director, net.NewDirectorGateway())
 
 	info, apiResponse := repo.GetInfo()
@@ -34,12 +41,12 @@ func FetchAndUpload(agentConfig *config.AgentConfig) {
 		return
 	}
 
-	if len(boshDeployments) > agentConfig.MaxBulkUploadSize {
+	if len(boshDeployments) > agent.Config.MaxBulkUploadSize {
 		log.Fatalln("Too many deployments to upload; working on a fix")
 	}
 	uploadData := ToBOSH{
 		Name:        info.Name,
-		TargetURI:   agentConfig.BOSHTarget,
+		TargetURI:   agent.Config.BOSHTarget,
 		UUID:        info.UUID,
 		Version:     info.Version,
 		CPI:         info.CPI,
@@ -53,8 +60,8 @@ func FetchAndUpload(agentConfig *config.AgentConfig) {
 		log.Fatalln("MARSHAL ERROR", err)
 	}
 
-	uploadEndpoint := fmt.Sprintf("%s/upload", agentConfig.WebserverTarget)
-	uploadDeploymentData(agentConfig, uploadEndpoint, bytes.NewReader(b))
+	uploadEndpoint := fmt.Sprintf("%s/upload", agent.Config.WebserverTarget)
+	uploadDeploymentData(agent.Config, uploadEndpoint, bytes.NewReader(b))
 
 }
 

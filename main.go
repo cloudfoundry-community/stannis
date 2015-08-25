@@ -53,7 +53,7 @@ func runAgent(c *cli.Context) {
 	}
 	fmt.Println(agentConfig)
 
-	agent.FetchAndUpload(agentConfig)
+	agent.NewAgent(agentConfig).FetchAndUpload()
 }
 
 func runWebserver(c *cli.Context) {
