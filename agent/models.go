@@ -5,8 +5,10 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
+	"net/http/httputil"
 	"time"
 
 	"github.com/cloudfoundry-community/gogobosh"
@@ -60,15 +62,22 @@ func FetchAndUpload(agentConfig *config.AgentConfig) {
 	}
 
 	uploadEndpoint := fmt.Sprintf("%s/upload", agentConfig.WebserverTarget)
+	uploadDeploymentData(agentConfig, uploadEndpoint, bytes.NewReader(b))
 
+}
+
+func uploadDeploymentData(agentConfig *config.AgentConfig, endpoint string, body io.Reader) {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
 	timeout := time.Duration(5 * time.Second)
 	client := &http.Client{Transport: tr, Timeout: timeout}
-	req, err := http.NewRequest("POST", uploadEndpoint, bytes.NewReader(b))
+	req, err := http.NewRequest("POST", endpoint, body)
+	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")
 	req.SetBasicAuth(agentConfig.WebserverUsername, agentConfig.WebserverPassword)
+
+	httputil.DumpRequest(req, true)
 
 	resp, err := client.Do(req)
 	if resp != nil {
