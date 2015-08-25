@@ -43,7 +43,6 @@ func (agent Agent) FetchAndUpload() {
 	}
 
 	var deploymentsToUpload models.Deployments
-	fmt.Println("compare", len(boshDeployments), agent.Config.MaxBulkUploadSize)
 	if len(boshDeployments) > agent.Config.MaxBulkUploadSize {
 		deploymentsToUpload = make(models.Deployments, len(boshDeployments))
 		for i, boshDeployment := range boshDeployments {
