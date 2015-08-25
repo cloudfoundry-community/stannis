@@ -80,7 +80,7 @@ type FilterTag struct {
 }
 
 // NewDeployment converts BOSH deployment information into a deployment view for the dashboard
-func NewDeployment(configTier config.Tier, configSlot config.Slot, boshDeployment upload.DeploymentFromBOSH) (deployment *Deployment) {
+func NewDeployment(configTier config.Tier, configSlot config.Slot, boshDeployment *upload.DeploymentFromBOSH) (deployment *Deployment) {
 	tierName := configTier.Name
 	slotName := configSlot.Name
 
@@ -114,6 +114,7 @@ func NewDeployment(configTier config.Tier, configSlot config.Slot, boshDeploymen
 	return
 }
 
+// ContainsFilterTag determines if a Deployment has a release matching filterTag
 func (deployment *Deployment) ContainsFilterTag(filterTag string) bool {
 	if filterTag == "" {
 		return true

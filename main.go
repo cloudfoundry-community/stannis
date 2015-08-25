@@ -40,21 +40,36 @@ func dashboardFilterByTag(params martini.Params, r render.Render) {
 func updateLatestDeployments(fromBOSH upload.FromBOSH) string {
 	reallyUUID := agent.ReallyUUID(fromBOSH.Target, fromBOSH.UUID)
 	fmt.Println("Received from", reallyUUID)
-	fmt.Printf("BOSH %#v\n", fromBOSH)
 	db[reallyUUID] = fromBOSH
-	fmt.Println(db)
-	fmt.Println(db[reallyUUID])
 
 	return reallyUUID
 }
 
-func updateDeployment(params martini.Params, boshDeployment upload.DeploymentFromBOSH) string {
+func updateDeployment(params martini.Params, uploadedDeployment upload.DeploymentFromBOSH) (int, string) {
 	reallyUUID := params["really_uuid"]
 	deploymentName := params["name"]
 
-	fmt.Println(db)
-	fmt.Println(reallyUUID, deploymentName, db[reallyUUID])
-	return "thanks"
+	bosh := db[reallyUUID]
+	var foundDeployment *upload.DeploymentFromBOSH
+	for i, deployment := range bosh.Deployments {
+		if deployment.Name == deploymentName {
+			foundDeployment = &uploadedDeployment
+			fmt.Println("Changed", i)
+			bosh.Deployments[i] = &uploadedDeployment
+			fmt.Println("To", bosh.Deployments[i])
+		}
+	}
+	fmt.Println(reallyUUID, deploymentName)
+	fmt.Printf("%#v\n", db[reallyUUID])
+	for _, deployment := range db[reallyUUID].Deployments {
+		fmt.Println(deployment)
+	}
+
+	if foundDeployment == nil {
+		fmt.Println("Unknown deployment name", deploymentName, "skipping...")
+		return 404, "unknown"
+	}
+	return 200, "thanks"
 }
 
 func runAgent(c *cli.Context) {
