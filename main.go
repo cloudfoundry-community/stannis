@@ -47,28 +47,12 @@ func updateLatestDeployments(fromBOSH upload.FromBOSH) string {
 
 func updateDeployment(params martini.Params, uploadedDeployment upload.DeploymentFromBOSH) (int, string) {
 	reallyUUID := params["really_uuid"]
-	deploymentName := params["name"]
 
 	bosh := db[reallyUUID]
-	var foundDeployment *upload.DeploymentFromBOSH
-	for i, deployment := range bosh.Deployments {
-		if deployment.Name == deploymentName {
-			foundDeployment = &uploadedDeployment
-			fmt.Println("Changed", i)
-			bosh.Deployments[i] = &uploadedDeployment
-			fmt.Println("To", bosh.Deployments[i])
-		}
-	}
-	fmt.Println(reallyUUID, deploymentName)
-	fmt.Printf("%#v\n", db[reallyUUID])
-	for _, deployment := range db[reallyUUID].Deployments {
-		fmt.Println(deployment)
-	}
 
-	if foundDeployment == nil {
-		fmt.Println("Unknown deployment name", deploymentName, "skipping...")
-		return 404, "unknown"
-	}
+	bosh.Deployments = append(bosh.Deployments, &uploadedDeployment)
+	db[reallyUUID] = bosh
+
 	return 200, "thanks"
 }
 

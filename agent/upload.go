@@ -44,10 +44,7 @@ func (agent Agent) FetchAndUpload() {
 
 	var deploymentsToUpload models.Deployments
 	if len(boshDeployments) > agent.Config.MaxBulkUploadSize {
-		deploymentsToUpload = make(models.Deployments, len(boshDeployments))
-		for i, boshDeployment := range boshDeployments {
-			deploymentsToUpload[i] = &models.Deployment{Name: boshDeployment.Name}
-		}
+		deploymentsToUpload = models.Deployments{}
 	} else {
 		deploymentsToUpload = boshDeployments
 	}
