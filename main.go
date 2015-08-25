@@ -1,18 +1,10 @@
 package main
 
 import (
-	"bytes"
-	"crypto/tls"
-	"encoding/json"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
-	"time"
 
-	"github.com/cloudfoundry-community/gogobosh"
-	"github.com/cloudfoundry-community/gogobosh/api"
-	"github.com/cloudfoundry-community/gogobosh/net"
 	"github.com/cloudfoundry-community/stannis/agent"
 	"github.com/cloudfoundry-community/stannis/config"
 	"github.com/cloudfoundry-community/stannis/data"
@@ -61,57 +53,7 @@ func runAgent(c *cli.Context) {
 	}
 	fmt.Println(agentConfig)
 
-	director := gogobosh.NewDirector(agentConfig.BOSHTarget, agentConfig.BOSHUsername, agentConfig.BOSHPassword)
-	repo := api.NewBoshDirectorRepository(&director, net.NewDirectorGateway())
-
-	info, apiResponse := repo.GetInfo()
-	if apiResponse.IsNotSuccessful() {
-		fmt.Println("Could not fetch BOSH info")
-		return
-	}
-
-	boshDeployments, apiResponse := repo.GetDeployments()
-	if apiResponse.IsNotSuccessful() {
-		fmt.Println("Could not fetch BOSH deployments")
-		return
-	}
-
-	uploadData := agent.ToBOSH{
-		Name:        info.Name,
-		TargetURI:   agentConfig.BOSHTarget,
-		UUID:        info.UUID,
-		Version:     info.Version,
-		CPI:         info.CPI,
-		Deployments: boshDeployments,
-	}
-
-	fmt.Println("Data to upload", uploadData)
-
-	b, err := json.Marshal(uploadData)
-	if err != nil {
-		log.Fatalln("MARSHAL ERROR", err)
-	}
-
-	uploadEndpoint := fmt.Sprintf("%s/upload", agentConfig.WebserverTarget)
-
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	timeout := time.Duration(5 * time.Second)
-	client := &http.Client{Transport: tr, Timeout: timeout}
-	req, err := http.NewRequest("POST", uploadEndpoint, bytes.NewReader(b))
-	req.Header.Set("Content-Type", "application/json")
-	req.SetBasicAuth(agentConfig.WebserverUsername, agentConfig.WebserverPassword)
-
-	resp, err := client.Do(req)
-	if resp != nil {
-		defer resp.Body.Close()
-	}
-
-	if err != nil {
-		log.Fatalln("POST ERROR", err)
-	}
-	fmt.Println(resp)
+	agent.FetchAndUpload(agentConfig)
 }
 
 func runWebserver(c *cli.Context) {
