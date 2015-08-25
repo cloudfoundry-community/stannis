@@ -7,12 +7,12 @@ import (
 
 // ToBOSH is the outbound data from a BOSH
 type ToBOSH struct {
-	Name        string             `form:"name"`
-	TargetURI   string             `form:"target_uri"`
-	UUID        string             `form:"uuid"`
-	Version     string             `form:"version"`
-	CPI         string             `form:"cpi"`
-	Deployments models.Deployments `form:"deployments"`
+	Name        string             `json:"name"`
+	Target      string             `json:"target"`
+	UUID        string             `json:"uuid"`
+	Version     string             `json:"version"`
+	CPI         string             `json:"cpi"`
+	Deployments models.Deployments `json:"deployments"`
 }
 
 // UploadGateway is the API for uploading deployments to Collector

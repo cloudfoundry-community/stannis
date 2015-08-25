@@ -55,7 +55,7 @@ func (agent Agent) FetchAndUpload() {
 	}
 	uploadData := ToBOSH{
 		Name:        info.Name,
-		TargetURI:   agent.Config.BOSHTarget,
+		Target:      agent.Config.BOSHTarget,
 		UUID:        info.UUID,
 		Version:     info.Version,
 		CPI:         info.CPI,

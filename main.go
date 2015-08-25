@@ -42,13 +42,18 @@ func updateLatestDeployments(fromBOSH upload.FromBOSH) string {
 	fmt.Println("Received from", reallyUUID)
 	fmt.Printf("BOSH %#v\n", fromBOSH)
 	db[reallyUUID] = fromBOSH
+	fmt.Println(db)
+	fmt.Println(db[reallyUUID])
+
 	return reallyUUID
 }
 
 func updateDeployment(params martini.Params, boshDeployment upload.DeploymentFromBOSH) string {
-	uuid := params["bosh_uuid"]
+	reallyUUID := params["really_uuid"]
 	deploymentName := params["name"]
-	fmt.Println(uuid, deploymentName, db[uuid])
+
+	fmt.Println(db)
+	fmt.Println(reallyUUID, deploymentName, db[reallyUUID])
 	return "thanks"
 }
 
@@ -78,7 +83,7 @@ func runWebserver(c *cli.Context) {
 	m.Get("/", dashboardShowAll)
 	m.Get("/tag/:filter", dashboardFilterByTag)
 	m.Post("/upload", binding.Json(upload.FromBOSH{}), updateLatestDeployments)
-	m.Post("/upload/:bosh_uuid/deployments/:name", binding.Json(upload.DeploymentFromBOSH{}), updateDeployment)
+	m.Post("/upload/:really_uuid/deployments/:name", binding.Json(upload.DeploymentFromBOSH{}), updateDeployment)
 	m.Run()
 }
 
