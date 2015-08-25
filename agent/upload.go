@@ -13,6 +13,7 @@ import (
 
 	"github.com/cloudfoundry-community/gogobosh"
 	"github.com/cloudfoundry-community/gogobosh/api"
+	"github.com/cloudfoundry-community/gogobosh/models"
 	"github.com/cloudfoundry-community/gogobosh/net"
 	"github.com/cloudfoundry-community/stannis/config"
 )
@@ -42,8 +43,14 @@ func (agent Agent) FetchAndUpload() {
 		return
 	}
 
+	var deploymentsToUpload models.Deployments
 	if len(boshDeployments) > agent.Config.MaxBulkUploadSize {
-		log.Fatalln("Too many deployments to upload; working on a fix")
+		deploymentsToUpload = make(models.Deployments, len(boshDeployments))
+		for i, boshDeployment := range boshDeployments {
+			deploymentsToUpload[i] = &models.Deployment{Name: boshDeployment.Name}
+		}
+	} else {
+		deploymentsToUpload = boshDeployments
 	}
 	uploadData := ToBOSH{
 		Name:        info.Name,
@@ -51,7 +58,7 @@ func (agent Agent) FetchAndUpload() {
 		UUID:        info.UUID,
 		Version:     info.Version,
 		CPI:         info.CPI,
-		Deployments: boshDeployments,
+		Deployments: deploymentsToUpload,
 	}
 
 	fmt.Println("Data to upload", uploadData)
@@ -97,4 +104,6 @@ func NewAgentUploadGateway() AgentUploadGateway {
 	return AgentUploadGateway{}
 }
 
-func (gateway AgentUploadGateway) UploadDeployments() {}
+func (gateway AgentUploadGateway) UploadBulkDeployments() {}
+func (gateway AgentUploadGateway) UploadDeploymentNames() {}
+func (gateway AgentUploadGateway) UploadDeployments()     {}

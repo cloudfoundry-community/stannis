@@ -17,6 +17,8 @@ type ToBOSH struct {
 
 // UploadGateway is the API for uploading deployments to Collector
 type UploadGateway interface {
+	UploadBulkDeployments()
+	UploadDeploymentNames()
 	UploadDeployments()
 }
 

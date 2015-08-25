@@ -29,6 +29,14 @@ var _ = Describe("Prepare data for templates", func() {
 	It("has max bulk upload", func() {
 		Expect(agentConfig.MaxBulkUploadSize).To(Equal(5))
 	})
+
+	// Due to the 100-continue issue, we upload only small data sets
+	// https://github.com/golang/go/issues/3665
+	It("uploads small sets of deployments in bulk", func() {
+	})
+
+	It("uploads only names of deployments first then uploads each deployment", func() {
+	})
 })
 
 type FakeUploadGateway struct{}
@@ -36,3 +44,7 @@ type FakeUploadGateway struct{}
 func NewFakeUploadGateway() (gateway FakeUploadGateway) {
 	return
 }
+
+func (gateway FakeUploadGateway) UploadBulkDeployments() {}
+func (gateway FakeUploadGateway) UploadDeploymentNames() {}
+func (gateway FakeUploadGateway) UploadDeployments()     {}
