@@ -1,6 +1,6 @@
 {
   "uuid": "uuid-aws-bosh-production",
-  "target_uri": "https://10.10.10.11:25555",
+  "target": "https://10.10.10.11:25555",
   "name": "aws-prod",
   "deployments": [
     {"name":"cf-aws-prod",

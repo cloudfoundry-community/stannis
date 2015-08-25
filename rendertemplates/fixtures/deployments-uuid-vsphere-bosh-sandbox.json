@@ -1,6 +1,6 @@
 {
   "uuid": "uuid-vsphere-bosh-sandbox",
-  "target_uri": "https://20.20.20.20:25555",
+  "target": "https://20.20.20.20:25555",
   "name": "dc-sandbox",
   "deployments": [
     {"name":"cf-vsph-sandbox",

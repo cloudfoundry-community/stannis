@@ -38,10 +38,18 @@ func dashboardFilterByTag(params martini.Params, r render.Render) {
 }
 
 func updateLatestDeployments(fromBOSH upload.FromBOSH) string {
-	reallyUUID := fmt.Sprintf("%s-%s", fromBOSH.TargetURI, fromBOSH.UUID)
+	reallyUUID := agent.ReallyUUID(fromBOSH.Target, fromBOSH.UUID)
 	fmt.Println("Received from", reallyUUID)
+	fmt.Printf("BOSH %#v\n", fromBOSH)
 	db[reallyUUID] = fromBOSH
-	return fmt.Sprintf("%v\n", db)
+	return reallyUUID
+}
+
+func updateDeployment(params martini.Params, boshDeployment upload.DeploymentFromBOSH) string {
+	uuid := params["bosh_uuid"]
+	deploymentName := params["name"]
+	fmt.Println(uuid, deploymentName, db[uuid])
+	return "thanks"
 }
 
 func runAgent(c *cli.Context) {
@@ -70,6 +78,7 @@ func runWebserver(c *cli.Context) {
 	m.Get("/", dashboardShowAll)
 	m.Get("/tag/:filter", dashboardFilterByTag)
 	m.Post("/upload", binding.Json(upload.FromBOSH{}), updateLatestDeployments)
+	m.Post("/upload/:bosh_uuid/deployments/:name", binding.Json(upload.DeploymentFromBOSH{}), updateDeployment)
 	m.Run()
 }
 

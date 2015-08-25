@@ -60,7 +60,7 @@ func (renderdata *RenderData) DiscoverDeploymentsForSlot(db data.DeploymentsPerB
 				}
 			}
 			if !match && configSlot.Filter.TargetURI != "" {
-				if boshDeployments.TargetURI == configSlot.Filter.TargetURI {
+				if boshDeployments.Target == configSlot.Filter.TargetURI {
 					match = true
 					deployment := NewDeployment(configTier, configSlot, boshDeployment)
 					if deployment.ContainsFilterTag(filterTag) {

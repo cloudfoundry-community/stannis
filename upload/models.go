@@ -3,7 +3,7 @@ package upload
 // FromBOSH is the inbound data from a BOSH
 type FromBOSH struct {
 	Name        string               `form:"name"`
-	TargetURI   string               `form:"target_uri"`
+	Target      string               `form:"target"`
 	UUID        string               `form:"uuid"`
 	Version     string               `form:"version"`
 	CPI         string               `form:"cpi"`

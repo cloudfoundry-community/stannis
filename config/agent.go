@@ -30,7 +30,7 @@ func LoadAgentConfigFromYAMLFile(path string) (config *AgentConfig, err error) {
 	config = &AgentConfig{}
 	err = yaml.Unmarshal(bytes, &config)
 
-	config.MaxBulkUploadSize = 5
+	config.MaxBulkUploadSize = 0
 
 	return config, err
 }

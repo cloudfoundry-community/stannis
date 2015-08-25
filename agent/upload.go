@@ -44,6 +44,7 @@ func (agent Agent) FetchAndUpload() {
 	}
 
 	var deploymentsToUpload models.Deployments
+	fmt.Println("compare", len(boshDeployments), agent.Config.MaxBulkUploadSize)
 	if len(boshDeployments) > agent.Config.MaxBulkUploadSize {
 		deploymentsToUpload = make(models.Deployments, len(boshDeployments))
 		for i, boshDeployment := range boshDeployments {
@@ -71,6 +72,21 @@ func (agent Agent) FetchAndUpload() {
 	uploadEndpoint := fmt.Sprintf("%s/upload", agent.Config.WebserverTarget)
 	uploadDeploymentData(agent.Config, uploadEndpoint, bytes.NewReader(b))
 
+	reallyUUID := ReallyUUID(agent.Config.BOSHTarget, info.UUID)
+
+	// If not bulk uploading, then now upload each deployment
+	if len(boshDeployments) > agent.Config.MaxBulkUploadSize {
+		for _, boshDeployment := range boshDeployments {
+			deploymentName := boshDeployment.Name
+			b, err = json.Marshal(boshDeployment)
+			if err != nil {
+				log.Fatalln("MARSHAL ERROR", err)
+			}
+
+			uploadEndpoint = fmt.Sprintf("%s/upload/%s/deployments/%s", agent.Config.WebserverTarget, reallyUUID, deploymentName)
+			uploadDeploymentData(agent.Config, uploadEndpoint, bytes.NewReader(b))
+		}
+	}
 }
 
 func uploadDeploymentData(agentConfig *config.AgentConfig, endpoint string, body io.Reader) {
