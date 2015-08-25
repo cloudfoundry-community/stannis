@@ -13,6 +13,7 @@ import (
 	"github.com/cloudfoundry-community/gogobosh"
 	"github.com/cloudfoundry-community/gogobosh/api"
 	"github.com/cloudfoundry-community/gogobosh/net"
+	"github.com/cloudfoundry-community/stannis/agent"
 	"github.com/cloudfoundry-community/stannis/config"
 	"github.com/cloudfoundry-community/stannis/data"
 	"github.com/cloudfoundry-community/stannis/rendertemplates"
@@ -75,7 +76,7 @@ func runAgent(c *cli.Context) {
 		return
 	}
 
-	uploadData := upload.ToBOSH{
+	uploadData := agent.ToBOSH{
 		Name:        info.Name,
 		TargetURI:   agentConfig.BOSHTarget,
 		UUID:        info.UUID,
