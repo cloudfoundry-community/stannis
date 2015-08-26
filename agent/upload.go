@@ -42,19 +42,13 @@ func (agent Agent) FetchAndUpload() {
 		return
 	}
 
-	var deploymentsToUpload models.Deployments
-	if len(boshDeployments) > agent.Config.MaxBulkUploadSize {
-		deploymentsToUpload = models.Deployments{}
-	} else {
-		deploymentsToUpload = boshDeployments
-	}
 	uploadData := ToBOSH{
 		Name:        info.Name,
 		Target:      agent.Config.BOSHTarget,
 		UUID:        info.UUID,
 		Version:     info.Version,
 		CPI:         info.CPI,
-		Deployments: deploymentsToUpload,
+		Deployments: models.Deployments{},
 	}
 
 	fmt.Println("Data to upload", uploadData)
@@ -69,18 +63,15 @@ func (agent Agent) FetchAndUpload() {
 
 	reallyUUID := ReallyUUID(agent.Config.BOSHTarget, info.UUID)
 
-	// If not bulk uploading, then now upload each deployment
-	if len(boshDeployments) > agent.Config.MaxBulkUploadSize {
-		for _, boshDeployment := range boshDeployments {
-			deploymentName := boshDeployment.Name
-			b, err = json.Marshal(boshDeployment)
-			if err != nil {
-				log.Fatalln("MARSHAL ERROR", err)
-			}
-
-			uploadEndpoint = fmt.Sprintf("%s/upload/%s/deployments/%s", agent.Config.WebserverTarget, reallyUUID, deploymentName)
-			uploadDeploymentData(agent.Config, uploadEndpoint, bytes.NewReader(b))
+	for _, boshDeployment := range boshDeployments {
+		deploymentName := boshDeployment.Name
+		b, err = json.Marshal(boshDeployment)
+		if err != nil {
+			log.Fatalln("MARSHAL ERROR", err)
 		}
+
+		uploadEndpoint = fmt.Sprintf("%s/upload/%s/deployments/%s", agent.Config.WebserverTarget, reallyUUID, deploymentName)
+		uploadDeploymentData(agent.Config, uploadEndpoint, bytes.NewReader(b))
 	}
 }
 

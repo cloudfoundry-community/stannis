@@ -16,8 +16,6 @@ type AgentConfig struct {
 	WebserverTarget   string `yaml:"webserver_target"`
 	WebserverUsername string `yaml:"webserver_username"`
 	WebserverPassword string `yaml:"webserver_password"`
-
-	MaxBulkUploadSize int `yaml:"max_bulk_upload_size"` // defaults to 5 below
 }
 
 // LoadAgentConfigFromYAMLFile loads pipeline configuration from a YAML file
@@ -29,8 +27,6 @@ func LoadAgentConfigFromYAMLFile(path string) (config *AgentConfig, err error) {
 
 	config = &AgentConfig{}
 	err = yaml.Unmarshal(bytes, &config)
-
-	config.MaxBulkUploadSize = 5
 
 	return config, err
 }
