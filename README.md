@@ -74,4 +74,5 @@ Thanks
 ------
 
 -	Many staff at [Stark & Wayne](https://starkandwayne.com) who've been working on pipelining BOSH deployments for our clients; which led to the problem being solved "what's actually running everywhere?"
+-	GE's Predix team at San Ramon who have huge BOSH universes and tested some edge cases of Golang standard libraries
 -	https://github.com/jiji262/Bootstrap_Metro_Dashboard was the theme used
