@@ -56,6 +56,21 @@ func updateDeployment(params martini.Params, uploadedDeployment upload.Deploymen
 	return 200, "thanks"
 }
 
+func updateDeploymentExtraData(params martini.Params, extraData upload.ExtraData) (int, string) {
+	reallyUUID := params["really_uuid"]
+	deploymentName := params["name"]
+	extraLabel := params["label"]
+
+	// bosh := db[reallyUUID]
+
+	fmt.Println(reallyUUID, deploymentName, extraLabel)
+	return 200, "thanks"
+}
+
+func getDatabase(r render.Render) {
+	r.JSON(200, db)
+}
+
 func runAgent(c *cli.Context) {
 	configPath := c.String("config")
 	var err error
@@ -81,8 +96,10 @@ func runWebserver(c *cli.Context) {
 	m.Use(auth.Basic(webserverConfig.Auth.Username, webserverConfig.Auth.Password))
 	m.Get("/", dashboardShowAll)
 	m.Get("/tag/:filter", dashboardFilterByTag)
+	m.Get("/db", getDatabase)
 	m.Post("/upload", binding.Json(upload.FromBOSH{}), updateLatestDeployments)
 	m.Post("/upload/:really_uuid/deployments/:name", binding.Json(upload.DeploymentFromBOSH{}), updateDeployment)
+	m.Post("/upload/:really_uuid/deployments/:name/extra/:label", binding.Json(upload.ExtraData{}), updateDeploymentExtraData)
 	m.Run()
 }
 

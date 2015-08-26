@@ -23,3 +23,7 @@ type DeploymentFromBOSH struct {
 	} `form:"stemcells"`
 	CloudConfig string `form:"cloud_config"`
 }
+
+// ExtraData captures some extra data about a deployment from a plugin
+type ExtraData struct {
+}
