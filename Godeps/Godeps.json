@@ -4,7 +4,7 @@
 	"Deps": [
 		{
 			"ImportPath": "github.com/cloudfoundry-community/gogobosh",
-			"Rev": "12c1185ca544084bd25ae9ae750cfa17951d8495"
+			"Rev": "835b677660b1be83510392e49813e6a575910467"
 		},
 		{
 			"ImportPath": "github.com/codegangsta/cli",
