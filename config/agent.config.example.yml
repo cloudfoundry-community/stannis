@@ -5,4 +5,4 @@ bosh_password: admin
 
 webserver_target: http://localhost:3000
 webserver_username: admin
-webserver_password: secret
+webserver_password: admin

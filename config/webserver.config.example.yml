@@ -1,7 +1,7 @@
 ---
 auth:
   username: admin
-  password: secret
+  password: admin
 pipelines:
 - name: Cloud Foundry
   tag: cf
