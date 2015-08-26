@@ -19,32 +19,56 @@ Running dashboard
 Create a YAML configuration file to describe the pipelines of deployments. See `config/webserver.config.example.yml` for the schema and examples.
 
 ```
-go run main.go -pipelines config.yml
+go run main.go webserver --config config/webserver.config.example.yml
 ```
 
-Upload deployment data from BOSHes
+Or if `stannis` is installed:
+
+```
+go get github.com/cloudfoundry-community/stannis
+stannis webserver --config config/webserver.config.example.yml
+```
+
+Deploying Stannis to Cloud Foundry
 ----------------------------------
 
-### Manually upload data
+This repository can be pushed to any Cloud Foundry. Stark & Wayne runs all its Stannis dashboards (one per client, one for itself) on [Pivotal Web Services](http://run.pivotal.io/).
 
-Manually, you could import the latest data from each BOSH:
+First, create `config.yml` in the root folder so that it is uploaded with the entire Stannis codebase. See `config/webserver.config.example.yml` for an example.
 
-```
-curl -X POST http://bosh-deployments.mycf.com/bosh -d '{"uuid": "the-uuid", "deployments": [{"name":"concourse","releases":[{"name":"concourse","version":"0.59.0"},{"name":"garden-linux","version":"0.284.0"},{"name":"slack-notification-resource","version":"3"},{"name":"cf-haproxy","version":"5"}],"stemcells":[{"name":"bosh-warden-boshlite-ubuntu-trusty-go_agent","version":"2776"}],"cloud_config":"none"}]}'
-```
-
-You could programmatically extract the deployments from each BOSH (where the app is running locally on port 3000)
+To deploy to any Cloud Foundry:
 
 ```
-deployments=$(curl -ks -u admin:admin https://10.20.30.40:25555/deployments)
-curl -X POST http://localhost:3000/upload -d "{\"uuid\": \"the-uuid\", \"name\": \"bosh-lite\", \"deployments\": $deployments}"
+cf push stannis
 ```
 
-If you are running the server with the example config (`go run main.go -pipelines config/webserver.config.example.yml`) then you can upload the example/fixtures data:
+Change `Procfile` to pass in any additional flags.
+
+Use Stannis to upload BOSH data
+-------------------------------
+
+This Stannis CLI is also an agent that fetches data from a BOSH and uploads it to a central Stannis dashboard.
 
 ```
-./bin/upload_fixtures
+go get github.com/cloudfoundry-community/stannis
+stannis agent --config agent-config.yml
 ```
+
+See `config/agent.config.example.yml` for an example of this configuration file.
+
+Run Stannis agent via BOSH
+--------------------------
+
+Since you already have BOSH, you can run one Stannis agent per BOSH using the [stannis-boshrelease](https://bosh.io/releases/github.com/cloudfoundry-community/stannis-boshrelease)
+
+See the README for upload and deployment instructions for your infrastructure.
+
+Run Stannis agent within the BOSH
+---------------------------------
+
+This seems like a cheap idea - run the `stannis agent` inside the BOSH VM itself.
+
+This could be easy using `bosh-init` where it is easy to merge multiple releases - such as `bosh` and `stannis` into one VM. Something to be investigated for sure.
 
 Thanks
 ------
