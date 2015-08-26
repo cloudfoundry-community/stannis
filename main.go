@@ -106,7 +106,7 @@ func runWebserver(c *cli.Context) {
 func main() {
 	app := cli.NewApp()
 	app.Name = "stannis"
-	app.Version = "0.1.0"
+	app.Version = "0.4.0"
 	app.Usage = "What deployments are running in which BOSH?"
 	app.Commands = []cli.Command{
 		{
