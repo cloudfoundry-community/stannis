@@ -3,5 +3,5 @@
 api=${api:-"http://localhost:3000"}
 
 for boshdeployment in $(ls rendertemplates/fixtures/*.json); do
-  curl -v -X POST -u admin:secret ${api}/upload -d "$(cat $boshdeployment)"
+  curl -v -X POST -u admin:admin ${api}/upload -d "$(cat $boshdeployment)"
 done
