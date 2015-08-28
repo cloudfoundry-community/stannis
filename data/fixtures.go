@@ -25,8 +25,7 @@ func (db DeploymentsPerBOSH) FixtureBosh(path string) (err error) {
 		log.Fatalf("%s missing reallyuuid", path)
 	}
 
-	bosh := NewBOSH(uploadedBOSH)
-	db[bosh.ReallyUUID] = bosh
+	db.UpdateBOSH(uploadedBOSH)
 	return
 }
 

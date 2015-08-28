@@ -37,9 +37,9 @@ type Deployment struct {
 	CloudConfig string
 }
 
-// NewBOSH constructs a BOSH from the uploaded BOSH data
-func NewBOSH(uploadedBOSH *upload.BOSH) (bosh *BOSH) {
-	return &BOSH{
+// UpdateBOSH constructs a BOSH from the uploaded BOSH data
+func (db DeploymentsPerBOSH) UpdateBOSH(uploadedBOSH *upload.BOSH) {
+	bosh := BOSH{
 		Name:        uploadedBOSH.Name,
 		Target:      uploadedBOSH.Target,
 		ReallyUUID:  uploadedBOSH.ReallyUUID,
@@ -48,6 +48,7 @@ func NewBOSH(uploadedBOSH *upload.BOSH) (bosh *BOSH) {
 		CPI:         uploadedBOSH.CPI,
 		Deployments: Deployments{},
 	}
+	db[uploadedBOSH.ReallyUUID] = &bosh
 }
 
 // UpdateDeployment adds/updates a Deployment from uploaded BOSHDeployment data
