@@ -1,0 +1,10 @@
+{
+  "deployment_name": "cf-aws-prod",
+  "data": [
+    {
+      "indicator": "down",
+      "value": "3 days ago",
+      "label": "RDS snaphot"
+    }
+  ]
+}

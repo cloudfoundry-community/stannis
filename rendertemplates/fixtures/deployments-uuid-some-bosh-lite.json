@@ -1,9 +1,0 @@
-{
-  "uuid": "uuid-some-bosh-lite",
-  "target": "https://10.10.10.10:25555",
-  "name": "try-anything",
-  "deployments": [
-    {"name":"cf-try-anything","releases":[{"name":"cf","version":"214"},{"name":"cf-haproxy","version":"5"}],"stemcells":[{"name":"bosh-warden-boshlite-ubuntu-trusty-go_agent","version":"2776"}],"cloud_config":"none"},
-    {"name":"cf2-try-anything","releases":[{"name":"cf","version":"215"},{"name":"cf-haproxy","version":"6"}],"stemcells":[{"name":"bosh-warden-boshlite-ubuntu-trusty-go_agent","version":"2776"}],"cloud_config":"none"}
-  ]
-}

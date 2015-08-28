@@ -1,0 +1,10 @@
+{
+  "really_uuid": "10.10.10.11-uuid-aws-bosh-production",
+  "name":"cf-aws-prod",
+  "releases":[
+    {"name":"cf","version":"211"},
+    {"name":"cf-haproxy","version":"5"}],
+  "stemcells":[
+    {"name":"bosh-aws-xen-hvm-ubuntu-trusty-go_agent","version":"3033"}],
+  "cloud_config":"none"
+}

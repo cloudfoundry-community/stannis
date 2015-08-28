@@ -53,7 +53,7 @@ func updateDeployment(params martini.Params, uploadedDeployment upload.Deploymen
 	bosh.Deployments = append(bosh.Deployments, &uploadedDeployment)
 	db[reallyUUID] = bosh
 
-	return 200, "thanks"
+	return 200, ""
 }
 
 func updateDeploymentExtraData(params martini.Params, extraData upload.ExtraData) (int, string) {
@@ -64,7 +64,7 @@ func updateDeploymentExtraData(params martini.Params, extraData upload.ExtraData
 	// bosh := db[reallyUUID]
 
 	fmt.Println(reallyUUID, deploymentName, extraLabel)
-	return 200, "thanks"
+	return 200, ""
 }
 
 func getDatabase(r render.Render) {

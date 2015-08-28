@@ -1,0 +1,10 @@
+{
+  "deployment_name": "cf-aws-prod",
+  "data": [
+    {
+      "indicator": "stable",
+      "value": "16 hours ago",
+      "label": "NFS volume snaphot"
+    }
+  ]
+}
