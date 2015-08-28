@@ -122,6 +122,15 @@
 								</a>
 							</li>
 							{{end}}
+							{{range .ExtraData}}
+							<li>
+								<a href="#">
+									<i class="{{.DisplayClass}}"></i>
+									<strong>{{.Value}}</strong>
+									{{.Label}}
+								</a>
+							</li>
+							{{end}}
 						</ul>
 					</div>
 					{{end}}

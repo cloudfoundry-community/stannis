@@ -63,6 +63,7 @@ type Deployment struct {
 	Name      string
 	Releases  []DisplayNameVersion
 	Stemcells []DisplayNameVersion
+	ExtraData []Data
 }
 
 // DisplayNameVersion is a reusable structure for Name/Version information
@@ -77,6 +78,13 @@ type FilterTag struct {
 	Name      string
 	Tag       string
 	IconClass string
+}
+
+// Data is miscellaneous data about a deployment
+type Data struct {
+	Label        string
+	Value        string
+	DisplayClass string
 }
 
 // NewDeployment converts BOSH deployment information into a deployment view for the dashboard
@@ -106,10 +114,23 @@ func NewDeployment(configTier config.Tier, configSlot config.Slot, boshDeploymen
 		}
 	}
 
+	extraData := []Data{}
+	for _, dataChunk := range boshDeployment.ExtraData {
+		for _, dataChunkItem := range dataChunk.Data {
+			dataItem := Data{
+				Label:        dataChunkItem.Label,
+				Value:        dataChunkItem.Value,
+				DisplayClass: "icon-minus blue",
+			}
+			extraData = append(extraData, dataItem)
+		}
+	}
+
 	deployment = &Deployment{
 		Name:      name,
 		Releases:  releases,
 		Stemcells: stemcells,
+		ExtraData: extraData,
 	}
 	return
 }
