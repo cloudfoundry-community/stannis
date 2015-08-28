@@ -117,10 +117,17 @@ func NewDeployment(configTier config.Tier, configSlot config.Slot, boshDeploymen
 	extraData := []Data{}
 	for _, dataChunk := range boshDeployment.ExtraData {
 		for _, dataChunkItem := range dataChunk.Data {
+			displayClass := "icon-minus blue"
+			if dataChunkItem.Indicator == "down" {
+				displayClass = "icon-arrow-down red"
+			}
+			if dataChunkItem.Indicator == "up" {
+				displayClass = "icon-arrow-up green"
+			}
 			dataItem := Data{
 				Label:        dataChunkItem.Label,
 				Value:        dataChunkItem.Value,
-				DisplayClass: "icon-minus blue",
+				DisplayClass: displayClass,
 			}
 			extraData = append(extraData, dataItem)
 		}
