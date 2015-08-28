@@ -42,10 +42,13 @@ func (agent Agent) FetchAndUpload() {
 		return
 	}
 
+	reallyUUID := ReallyUUID(agent.Config.BOSHTarget, info.UUID)
+
 	uploadData := ToBOSH{
 		Name:        info.Name,
 		Target:      agent.Config.BOSHTarget,
 		UUID:        info.UUID,
+		ReallyUUID:  reallyUUID,
 		Version:     info.Version,
 		CPI:         info.CPI,
 		Deployments: models.Deployments{},
@@ -60,8 +63,6 @@ func (agent Agent) FetchAndUpload() {
 
 	uploadEndpoint := fmt.Sprintf("%s/upload", agent.Config.WebserverTarget)
 	uploadDeploymentData(agent.Config, uploadEndpoint, bytes.NewReader(b))
-
-	reallyUUID := ReallyUUID(agent.Config.BOSHTarget, info.UUID)
 
 	for _, boshDeployment := range boshDeployments {
 		deploymentName := boshDeployment.Name
@@ -96,6 +97,7 @@ func uploadDeploymentData(agentConfig *config.AgentConfig, endpoint string, body
 	if err != nil {
 		log.Fatalln("POST ERROR", err)
 	}
-	fmt.Println(resp)
-
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(resp.Body)
+	fmt.Println(resp.Status, buf.String())
 }

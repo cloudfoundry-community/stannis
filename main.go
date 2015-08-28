@@ -38,6 +38,9 @@ func dashboardFilterByTag(params martini.Params, r render.Render) {
 }
 
 func updateBOSH(uploadedBOSH upload.BOSH) (int, string) {
+	if uploadedBOSH.ReallyUUID == "" {
+		return 400, "missing field reallyuuid"
+	}
 	fmt.Println("Received from", uploadedBOSH.ReallyUUID)
 	db.UpdateBOSH(&uploadedBOSH)
 
@@ -48,6 +51,9 @@ func updateDeployment(params martini.Params, uploadedDeployment upload.BOSHDeplo
 	reallyUUID := params["reallyuuid"]
 
 	bosh := db[reallyUUID]
+	if bosh == nil {
+		return 404, fmt.Sprintf("unknown UUID `%s'", reallyUUID)
+	}
 	bosh.UpdateDeployment(&uploadedDeployment)
 
 	return 200, ""

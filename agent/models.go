@@ -9,6 +9,7 @@ import (
 type ToBOSH struct {
 	Name        string             `json:"name"`
 	Target      string             `json:"target"`
+	ReallyUUID  string             `json:"reallyuuid"`
 	UUID        string             `json:"uuid"`
 	Version     string             `json:"version"`
 	CPI         string             `json:"cpi"`

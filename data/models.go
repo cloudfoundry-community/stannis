@@ -1,6 +1,7 @@
 package data
 
 import (
+	"fmt"
 	"sort"
 
 	"github.com/cloudfoundry-community/stannis/upload"
@@ -48,7 +49,10 @@ func (db DeploymentsPerBOSH) UpdateBOSH(uploadedBOSH *upload.BOSH) {
 		CPI:         uploadedBOSH.CPI,
 		Deployments: Deployments{},
 	}
+	fmt.Println(uploadedBOSH.ReallyUUID)
+	fmt.Println(db)
 	db[uploadedBOSH.ReallyUUID] = &bosh
+	fmt.Println(db)
 }
 
 // UpdateDeployment adds/updates a Deployment from uploaded BOSHDeployment data
