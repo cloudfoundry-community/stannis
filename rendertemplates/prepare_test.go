@@ -20,15 +20,15 @@ var _ = Describe("Prepare data for templates", func() {
 		expectedRenderData = *TestScenarioData()
 		db = data.NewDeploymentsPerBOSH()
 
-		db.FixtureBosh("fixtures/bosh-lite.json")
-		db.FixtureDeployment("fixtures/deployment-bosh-lite-cf1.json")
-		db.FixtureDeployment("fixtures/deployment-bosh-lite-cf2.json")
+		db.FixtureBosh("../upload/fixtures/bosh-lite.json")
+		db.FixtureDeployment("../upload/fixtures/deployment-bosh-lite-cf1.json")
+		db.FixtureDeployment("../upload/fixtures/deployment-bosh-lite-cf2.json")
 
-		db.FixtureBosh("fixtures/bosh-vsphere-sandbox.json")
-		db.FixtureDeployment("fixtures/deployment-vsphere-sandbox-cf.json")
+		db.FixtureBosh("../upload/fixtures/bosh-vsphere-sandbox.json")
+		db.FixtureDeployment("../upload/fixtures/deployment-vsphere-sandbox-cf.json")
 
-		db.FixtureBosh("fixtures/bosh-aws-production.json")
-		db.FixtureDeployment("fixtures/deployment-aws-production-cf.json")
+		db.FixtureBosh("../upload/fixtures/bosh-aws-production.json")
+		db.FixtureDeployment("../upload/fixtures/deployment-aws-production-cf.json")
 
 		var err error
 		pipelineConfig, err = config.LoadConfigFromYAMLFile("../config/webserver.config.example.yml")

@@ -13,15 +13,15 @@ var _ = Describe("Data", func() {
 	)
 	BeforeEach(func() {
 		db = NewDeploymentsPerBOSH()
-		db.FixtureBosh("../rendertemplates/fixtures/bosh-lite.json")
-		db.FixtureDeployment("../rendertemplates/fixtures/deployment-bosh-lite-cf1.json")
-		db.FixtureDeployment("../rendertemplates/fixtures/deployment-bosh-lite-cf2.json")
+		db.FixtureBosh("../upload/fixtures/bosh-lite.json")
+		db.FixtureDeployment("../upload/fixtures/deployment-bosh-lite-cf1.json")
+		db.FixtureDeployment("../upload/fixtures/deployment-bosh-lite-cf2.json")
 
-		db.FixtureBosh("../rendertemplates/fixtures/bosh-vsphere-sandbox.json")
-		db.FixtureDeployment("../rendertemplates/fixtures/deployment-vsphere-sandbox-cf.json")
+		db.FixtureBosh("../upload/fixtures/bosh-vsphere-sandbox.json")
+		db.FixtureDeployment("../upload/fixtures/deployment-vsphere-sandbox-cf.json")
 
-		db.FixtureBosh("../rendertemplates/fixtures/bosh-aws-production.json")
-		db.FixtureDeployment("../rendertemplates/fixtures/deployment-aws-production-cf.json")
+		db.FixtureBosh("../upload/fixtures/bosh-aws-production.json")
+		db.FixtureDeployment("../upload/fixtures/deployment-aws-production-cf.json")
 	})
 
 	It("finds releases", func() {
