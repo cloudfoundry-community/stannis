@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/cloudfoundry-community/stannis/config"
-	"github.com/cloudfoundry-community/stannis/upload"
+	"github.com/cloudfoundry-community/stannis/data"
 )
 
 // The PipelinedDeployments struct is used by the dashboard template to render/display
@@ -80,7 +80,7 @@ type FilterTag struct {
 }
 
 // NewDeployment converts BOSH deployment information into a deployment view for the dashboard
-func NewDeployment(configTier config.Tier, configSlot config.Slot, boshDeployment *upload.DeploymentFromBOSH) (deployment *Deployment) {
+func NewDeployment(configTier config.Tier, configSlot config.Slot, boshDeployment *data.Deployment) (deployment *Deployment) {
 	tierName := configTier.Name
 	slotName := configSlot.Name
 

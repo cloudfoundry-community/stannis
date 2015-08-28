@@ -1,27 +1,28 @@
 package upload
 
-// FromBOSH is the inbound data from a BOSH
-type FromBOSH struct {
-	Name        string                `form:"name"`
-	Target      string                `form:"target"`
-	UUID        string                `form:"uuid"`
-	Version     string                `form:"version"`
-	CPI         string                `form:"cpi"`
-	Deployments []*DeploymentFromBOSH `form:"deployments"`
+// BOSH is the inbound data from a BOSH
+type BOSH struct {
+	Name       string `form:"name"`
+	Target     string `form:"target"`
+	ReallyUUID string `form:"reallyuuid"`
+	UUID       string `form:"uuid"`
+	Version    string `form:"version"`
+	CPI        string `form:"cpi"`
 }
 
-// DeploymentFromBOSH is the received list of deployments from a BOSH
-type DeploymentFromBOSH struct {
-	Name     string `form:"name"`
-	Releases []struct {
-		Name    string `form:"name"`
-		Version string `form:"version"`
+// BOSHDeployment is the received list of deployments from a BOSH
+type BOSHDeployment struct {
+	ReallyUUID string `form:"reallyuuid"`
+	Name       string `form:"name"`
+	Releases   []struct {
+		Name    string
+		Version string
 	} `form:"releases"`
 	Stemcells []struct {
-		Name    string `form:"name"`
-		Version string `form:"version"`
+		Name    string
+		Version string
 	} `form:"stemcells"`
-	CloudConfig string `form:"cloud_config"`
+	CloudConfig string `form:"cloudconfig"`
 }
 
 // ExtraData captures some extra data about a deployment from a plugin

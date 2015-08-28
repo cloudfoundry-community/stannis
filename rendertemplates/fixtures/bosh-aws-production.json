@@ -1,5 +1,5 @@
 {
-  "really_uuid": "10.10.10.11-uuid-aws-bosh-production",
+  "reallyuuid": "10.10.10.11-uuid-aws-bosh-production",
   "uuid": "uuid-aws-bosh-production",
   "target": "https://10.10.10.11:25555",
   "name": "aws-prod"

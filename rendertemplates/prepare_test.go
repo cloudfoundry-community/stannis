@@ -20,9 +20,15 @@ var _ = Describe("Prepare data for templates", func() {
 		expectedRenderData = *TestScenarioData()
 		db = data.NewDeploymentsPerBOSH()
 
-		db.LoadFixtureData("fixtures/deployments-uuid-some-bosh-lite.json")
-		db.LoadFixtureData("fixtures/deployments-uuid-aws-bosh-production.json")
-		db.LoadFixtureData("fixtures/deployments-uuid-vsphere-bosh-sandbox.json")
+		db.FixtureBosh("fixtures/bosh-lite.json")
+		db.FixtureDeployment("fixtures/deployment-bosh-lite-cf1.json")
+		db.FixtureDeployment("fixtures/deployment-bosh-lite-cf2.json")
+
+		db.FixtureBosh("fixtures/bosh-vsphere-sandbox.json")
+		db.FixtureDeployment("fixtures/deployment-vsphere-sandbox-cf.json")
+
+		db.FixtureBosh("fixtures/bosh-aws-production.json")
+		db.FixtureDeployment("fixtures/deployment-aws-production-cf.json")
 
 		var err error
 		pipelineConfig, err = config.LoadConfigFromYAMLFile("../config/webserver.config.example.yml")
@@ -51,6 +57,7 @@ var _ = Describe("Prepare data for templates", func() {
 				expectedSlot := expectedTier.Slots[slotIndex]
 				Expect(expectedSlot).ToNot(BeNil())
 
+				// fmt.Println(renderTier.Name, slotIndex)
 				Expect(len(renderSlot.Deployments)).To(Equal(len(expectedSlot.Deployments)))
 
 				for deploymentIndex := range renderSlot.Deployments {

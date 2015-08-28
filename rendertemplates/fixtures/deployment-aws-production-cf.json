@@ -1,5 +1,5 @@
 {
-  "really_uuid": "10.10.10.11-uuid-aws-bosh-production",
+  "reallyuuid": "10.10.10.11-uuid-aws-bosh-production",
   "name":"cf-aws-prod",
   "releases":[
     {"name":"cf","version":"211"},

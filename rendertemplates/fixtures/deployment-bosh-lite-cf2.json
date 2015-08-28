@@ -1,7 +1,6 @@
 {
-  "really_uuid": "10.10.10.10-uuid-some-bosh-lite",
+  "reallyuuid": "10.10.10.10-uuid-some-bosh-lite",
   "name":"cf2-try-anything",
   "releases":[{"name":"cf","version":"215"},{"name":"cf-haproxy","version":"6"}],
-  "stemcells":[{"name":"bosh-warden-boshlite-ubuntu-trusty-go_agent","version":"2776"}],
-  "cloud_config":"none"
+  "stemcells":[{"name":"bosh-warden-boshlite-ubuntu-trusty-go_agent","version":"2776"}]
 }

@@ -1,5 +1,5 @@
 {
-  "really_uuid": "20.20.20.20-uuid-vsphere-bosh-sandbox",
+  "reallyuuid": "20.20.20.20-uuid-vsphere-bosh-sandbox",
   "name":"cf-vsph-sandbox",
   "releases":[
     {"name":"concourse","version":"0.60.1"},

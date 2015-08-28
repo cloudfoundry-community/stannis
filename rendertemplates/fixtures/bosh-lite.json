@@ -1,5 +1,5 @@
 {
-  "really_uuid": "10.10.10.10-uuid-some-bosh-lite",
+  "reallyuuid": "10.10.10.10-uuid-some-bosh-lite",
   "uuid": "uuid-some-bosh-lite",
   "target": "https://10.10.10.10:25555",
   "name": "try-anything"

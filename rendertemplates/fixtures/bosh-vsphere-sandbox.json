@@ -1,5 +1,5 @@
 {
-  "really_uuid": "20.20.20.20-uuid-vsphere-bosh-sandbox",
+  "reallyuuid": "20.20.20.20-uuid-vsphere-bosh-sandbox",
   "uuid": "uuid-vsphere-bosh-sandbox",
   "target": "https://20.20.20.20:25555",
   "name": "dc-sandbox"

@@ -37,16 +37,16 @@ func dashboardFilterByTag(params martini.Params, r render.Render) {
 	r.HTML(200, "dashboard", renderData)
 }
 
-func updateLatestDeployments(fromBOSH upload.FromBOSH) string {
-	reallyUUID := agent.ReallyUUID(fromBOSH.Target, fromBOSH.UUID)
+func updateLatestDeployments(BOSH upload.BOSH) string {
+	reallyUUID := agent.ReallyUUID(BOSH.Target, BOSH.UUID)
 	fmt.Println("Received from", reallyUUID)
-	db[reallyUUID] = fromBOSH
+	db[reallyUUID] = BOSH
 
 	return reallyUUID
 }
 
-func updateDeployment(params martini.Params, uploadedDeployment upload.DeploymentFromBOSH) (int, string) {
-	reallyUUID := params["really_uuid"]
+func updateDeployment(params martini.Params, uploadedDeployment upload.BOSHDeployment) (int, string) {
+	reallyUUID := params["reallyuuid"]
 
 	bosh := db[reallyUUID]
 
@@ -57,7 +57,7 @@ func updateDeployment(params martini.Params, uploadedDeployment upload.Deploymen
 }
 
 func updateDeploymentExtraData(params martini.Params, extraData upload.ExtraData) (int, string) {
-	reallyUUID := params["really_uuid"]
+	reallyUUID := params["reallyuuid"]
 	deploymentName := params["name"]
 	extraLabel := params["label"]
 
@@ -97,9 +97,9 @@ func runWebserver(c *cli.Context) {
 	m.Get("/", dashboardShowAll)
 	m.Get("/tag/:filter", dashboardFilterByTag)
 	m.Get("/db", getDatabase)
-	m.Post("/upload", binding.Json(upload.FromBOSH{}), updateLatestDeployments)
-	m.Post("/upload/:really_uuid/deployments/:name", binding.Json(upload.DeploymentFromBOSH{}), updateDeployment)
-	m.Post("/upload/:really_uuid/deployments/:name/extra/:label", binding.Json(upload.ExtraData{}), updateDeploymentExtraData)
+	m.Post("/upload", binding.Json(upload.BOSH{}), updateLatestDeployments)
+	m.Post("/upload/:reallyuuid/deployments/:name", binding.Json(upload.BOSHDeployment{}), updateDeployment)
+	m.Post("/upload/:reallyuuid/deployments/:name/extra/:label", binding.Json(upload.ExtraData{}), updateDeploymentExtraData)
 	m.Run()
 }
 

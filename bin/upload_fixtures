@@ -8,14 +8,14 @@ for bosh in $(ls rendertemplates/fixtures/bosh*.json); do
   curl -v -X POST -u admin:admin ${api}/upload -d "$(cat $bosh)"
 done
 for boshdeployment in $(ls rendertemplates/fixtures/deployment-*.json); do
-  really_uuid=$(cat $boshdeployment | jq -r ".really_uuid")
+  reallyuuid=$(cat $boshdeployment | jq -r ".reallyuuid")
   deployment_name=$(cat $boshdeployment | jq -r ".name")
-  curl ${api}/upload/${really_uuid}/deployments/${deployment_name} \
+  curl ${api}/upload/${reallyuuid}/deployments/${deployment_name} \
      -v -X POST -u admin:admin -d "$(cat $boshdeployment)"
 done
 # for data in $(ls rendertemplates/fixtures/data*.json); do
-#   really_uuid=$(cat $data | jq -r ".really_uuid")
+#   reallyuuid=$(cat $data | jq -r ".reallyuuid")
 #   deployment_name=$(cat $data | jq -r ".deployment_name")
-#   curl ${api}/upload/${really_uuid}/deployments/${deployment_name}/data \
+#   curl ${api}/upload/${reallyuuid}/deployments/${deployment_name}/data \
 #      -v -X POST -u admin:admin -d "$(cat $boshdeployment)"
 # done
