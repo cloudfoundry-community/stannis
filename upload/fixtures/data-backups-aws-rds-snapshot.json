@@ -1,6 +1,6 @@
 {
   "reallyuuid": "10.10.10.11-uuid-aws-bosh-production",
-  "deployment_name": "cf-aws-prod",
+  "deploymentname": "cf-aws-prod",
   "label": "backups-rds",
   "data": [
     {

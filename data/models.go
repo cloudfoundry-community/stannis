@@ -36,6 +36,22 @@ type Deployment struct {
 		Version string
 	}
 	CloudConfig string
+	ExtraData   ExtraData
+}
+
+// ExtraData is uploaded data about a running Deployment
+type ExtraData map[string]*DeploymentData
+
+// DeploymentData describes extra data about a running Deployment
+type DeploymentData struct {
+	ReallyUUID     string
+	DeploymentName string
+	Label          string
+	Data           []struct {
+		Indicator string
+		Value     string
+		Label     string
+	}
 }
 
 // UpdateBOSH constructs a BOSH from the uploaded BOSH data
@@ -62,8 +78,20 @@ func (bosh *BOSH) UpdateDeployment(uploadedDeployment *upload.BOSHDeployment) {
 		Releases:    uploadedDeployment.Releases,
 		Stemcells:   uploadedDeployment.Stemcells,
 		CloudConfig: uploadedDeployment.CloudConfig,
+		ExtraData:   ExtraData{},
 	}
 	bosh.Deployments[deployment.Name] = deployment
+}
+
+// UpdateDeploymentData adds/updates addition data about a BOSH deployment in action
+func (deployment *Deployment) UpdateDeploymentData(uploadedData *upload.DeploymentData) {
+	data := &DeploymentData{
+		ReallyUUID:     uploadedData.ReallyUUID,
+		DeploymentName: uploadedData.DeploymentName,
+		Label:          uploadedData.Label,
+		Data:           uploadedData.Data,
+	}
+	deployment.ExtraData[data.Label] = data
 }
 
 // NewDeploymentsPerBOSH constructs a new mapping of Deployments to each BOSH

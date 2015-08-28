@@ -59,14 +59,21 @@ func updateDeployment(params martini.Params, uploadedDeployment upload.BOSHDeplo
 	return 200, ""
 }
 
-func updateDeploymentExtraData(params martini.Params, extraData upload.ExtraData) (int, string) {
+func updateDeploymentExtraData(params martini.Params, data upload.DeploymentData) (int, string) {
 	reallyUUID := params["reallyuuid"]
 	deploymentName := params["name"]
-	extraLabel := params["label"]
 
-	// bosh := db[reallyUUID]
+	bosh := db[reallyUUID]
+	if bosh == nil {
+		return 404, fmt.Sprintf("unknown UUID `%s'", reallyUUID)
+	}
+	deployment := bosh.Deployments[deploymentName]
+	if deployment == nil {
+		return 404, fmt.Sprintf("unknown deployment name `%s'", deploymentName)
+	}
 
-	fmt.Println(reallyUUID, deploymentName, extraLabel)
+	fmt.Printf("%#v\n", data)
+	deployment.UpdateDeploymentData(&data)
 	return 200, ""
 }
 
@@ -102,7 +109,7 @@ func runWebserver(c *cli.Context) {
 	m.Get("/db", getDatabase)
 	m.Post("/upload", binding.Json(upload.BOSH{}), updateBOSH)
 	m.Post("/upload/:reallyuuid/deployments/:name", binding.Json(upload.BOSHDeployment{}), updateDeployment)
-	m.Post("/upload/:reallyuuid/deployments/:name/data/:label", binding.Json(upload.ExtraData{}), updateDeploymentExtraData)
+	m.Post("/upload/:reallyuuid/deployments/:name/data/:label", binding.Json(upload.DeploymentData{}), updateDeploymentExtraData)
 	m.Run()
 }
 

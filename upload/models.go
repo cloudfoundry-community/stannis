@@ -25,6 +25,14 @@ type BOSHDeployment struct {
 	CloudConfig string `form:"cloudconfig"`
 }
 
-// ExtraData captures some extra data about a deployment from a plugin
-type ExtraData struct {
+// DeploymentData captures some extra data about a deployment from a plugin
+type DeploymentData struct {
+	ReallyUUID     string `json:"reallyuuid"`
+	DeploymentName string `json:"deploymentname"`
+	Label          string `json:"label"`
+	Data           []struct {
+		Indicator string
+		Value     string
+		Label     string
+	} `json:"data"`
 }

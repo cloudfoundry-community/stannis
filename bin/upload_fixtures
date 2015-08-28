@@ -2,6 +2,7 @@
 
 api=${api:-"http://localhost:3000"}
 
+set -e
 set -x
 
 for bosh in $(ls upload/fixtures/bosh*.json); do
@@ -15,8 +16,8 @@ for boshdeployment in $(ls upload/fixtures/deployment-*.json); do
 done
 for data in $(ls upload/fixtures/data*.json); do
   reallyuuid=$(cat $data | jq -r ".reallyuuid")
-  deployment_name=$(cat $data | jq -r ".deployment_name")
+  deployment_name=$(cat $data | jq -r ".deploymentname")
   label=$(cat $data | jq -r ".label")
   curl ${api}/upload/${reallyuuid}/deployments/${deployment_name}/data/${label} \
-     -v -X POST -u admin:admin -d "$(cat $boshdeployment)"
+     -v -X POST -u admin:admin -d "$(cat $data)"
 done
