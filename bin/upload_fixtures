@@ -4,18 +4,19 @@ api=${api:-"http://localhost:3000"}
 
 set -x
 
-for bosh in $(ls rendertemplates/fixtures/bosh*.json); do
+for bosh in $(ls upload/fixtures/bosh*.json); do
   curl -v -X POST -u admin:admin ${api}/upload -d "$(cat $bosh)"
 done
-for boshdeployment in $(ls rendertemplates/fixtures/deployment-*.json); do
+for boshdeployment in $(ls upload/fixtures/deployment-*.json); do
   reallyuuid=$(cat $boshdeployment | jq -r ".reallyuuid")
   deployment_name=$(cat $boshdeployment | jq -r ".name")
   curl ${api}/upload/${reallyuuid}/deployments/${deployment_name} \
      -v -X POST -u admin:admin -d "$(cat $boshdeployment)"
 done
-# for data in $(ls rendertemplates/fixtures/data*.json); do
-#   reallyuuid=$(cat $data | jq -r ".reallyuuid")
-#   deployment_name=$(cat $data | jq -r ".deployment_name")
-#   curl ${api}/upload/${reallyuuid}/deployments/${deployment_name}/data \
-#      -v -X POST -u admin:admin -d "$(cat $boshdeployment)"
-# done
+for data in $(ls upload/fixtures/data*.json); do
+  reallyuuid=$(cat $data | jq -r ".reallyuuid")
+  deployment_name=$(cat $data | jq -r ".deployment_name")
+  label=$(cat $data | jq -r ".label")
+  curl ${api}/upload/${reallyuuid}/deployments/${deployment_name}/data/${label} \
+     -v -X POST -u admin:admin -d "$(cat $boshdeployment)"
+done

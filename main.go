@@ -102,7 +102,7 @@ func runWebserver(c *cli.Context) {
 	m.Get("/db", getDatabase)
 	m.Post("/upload", binding.Json(upload.BOSH{}), updateBOSH)
 	m.Post("/upload/:reallyuuid/deployments/:name", binding.Json(upload.BOSHDeployment{}), updateDeployment)
-	m.Post("/upload/:reallyuuid/deployments/:name/extra/:label", binding.Json(upload.ExtraData{}), updateDeploymentExtraData)
+	m.Post("/upload/:reallyuuid/deployments/:name/data/:label", binding.Json(upload.ExtraData{}), updateDeploymentExtraData)
 	m.Run()
 }
 
