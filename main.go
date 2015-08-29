@@ -65,11 +65,15 @@ func updateDeploymentExtraData(params martini.Params, data upload.DeploymentData
 
 	bosh := db[reallyUUID]
 	if bosh == nil {
-		return 404, fmt.Sprintf("unknown UUID `%s'", reallyUUID)
+		msg := fmt.Sprintf("unknown UUID `%s'", reallyUUID)
+		fmt.Println(msg)
+		return 404, msg
 	}
 	deployment := bosh.Deployments[deploymentName]
 	if deployment == nil {
-		return 404, fmt.Sprintf("unknown deployment name `%s'", deploymentName)
+		msg := fmt.Sprintf("unknown deployment name `%s'", deploymentName)
+		fmt.Println(msg)
+		return 404, msg
 	}
 
 	fmt.Printf("%#v\n", data)
