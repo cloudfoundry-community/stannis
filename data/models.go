@@ -77,14 +77,18 @@ func (db DeploymentsPerBOSH) UpdateBOSH(uploadedBOSH *upload.BOSH) {
 
 // UpdateDeployment adds/updates a Deployment from uploaded BOSHDeployment data
 func (bosh *BOSH) UpdateDeployment(uploadedDeployment *upload.BOSHDeployment) {
-	deployment := &Deployment{
-		Name:        uploadedDeployment.Name,
-		Releases:    uploadedDeployment.Releases,
-		Stemcells:   uploadedDeployment.Stemcells,
-		CloudConfig: uploadedDeployment.CloudConfig,
-		ExtraData:   ExtraData{},
+	name := uploadedDeployment.Name
+	if bosh.Deployments[name] == nil {
+		deployment := &Deployment{
+			ExtraData: ExtraData{},
+		}
+		bosh.Deployments[name] = deployment
 	}
-	bosh.Deployments[deployment.Name] = deployment
+	deployment := bosh.Deployments[name]
+	deployment.Name = uploadedDeployment.Name
+	deployment.Releases = uploadedDeployment.Releases
+	deployment.Stemcells = uploadedDeployment.Stemcells
+	deployment.CloudConfig = uploadedDeployment.CloudConfig
 }
 
 // UpdateDeploymentData adds/updates addition data about a BOSH deployment in action
