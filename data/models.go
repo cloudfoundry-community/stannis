@@ -56,18 +56,22 @@ type DeploymentData struct {
 
 // UpdateBOSH constructs a BOSH from the uploaded BOSH data
 func (db DeploymentsPerBOSH) UpdateBOSH(uploadedBOSH *upload.BOSH) {
-	bosh := BOSH{
-		Name:        uploadedBOSH.Name,
-		Target:      uploadedBOSH.Target,
-		ReallyUUID:  uploadedBOSH.ReallyUUID,
-		UUID:        uploadedBOSH.UUID,
-		Version:     uploadedBOSH.Version,
-		CPI:         uploadedBOSH.CPI,
-		Deployments: Deployments{},
+	reallyUUID := uploadedBOSH.ReallyUUID
+	if db[reallyUUID] == nil {
+		bosh := BOSH{
+			Deployments: Deployments{},
+		}
+		db[reallyUUID] = &bosh
 	}
+	bosh := db[reallyUUID]
+	bosh.Name = uploadedBOSH.Name
+	bosh.Target = uploadedBOSH.Target
+	bosh.ReallyUUID = uploadedBOSH.ReallyUUID
+	bosh.UUID = uploadedBOSH.UUID
+	bosh.Version = uploadedBOSH.Version
+	bosh.CPI = uploadedBOSH.CPI
+
 	fmt.Println(uploadedBOSH.ReallyUUID)
-	fmt.Println(db)
-	db[uploadedBOSH.ReallyUUID] = &bosh
 	fmt.Println(db)
 }
 
