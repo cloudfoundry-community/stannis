@@ -132,6 +132,14 @@ func NewDeployment(configTier config.Tier, configSlot config.Slot, boshDeploymen
 			extraData = append(extraData, dataItem)
 		}
 	}
+	if len(extraData) == 0 {
+		dataItem := Data{
+			Label:        "backup status",
+			Value:        "unknown",
+			DisplayClass: "icon-arrow-down red",
+		}
+		extraData = append(extraData, dataItem)
+	}
 
 	deployment = &Deployment{
 		Name:      name,
