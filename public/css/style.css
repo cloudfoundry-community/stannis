@@ -834,6 +834,10 @@ ul.messages li .message {
 	float:left;
 	margin-top: 0px;
 	font-weight: 300;
+
+	/* hide long messages */
+	white-space:nowrap;
+	overflow:hidden;
 }
 
 .box-header h2 i {
