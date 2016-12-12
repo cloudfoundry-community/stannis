@@ -2,6 +2,7 @@ package rendertemplates
 
 import (
 	"regexp"
+	"sort"
 
 	"github.com/cloudfoundry-community/stannis/config"
 	"github.com/cloudfoundry-community/stannis/data"
@@ -38,7 +39,14 @@ func PrepareRenderData(config *config.PipelinesConfig, db data.DeploymentsPerBOS
 func (renderdata *RenderData) DiscoverDeploymentsForSlot(db data.DeploymentsPerBOSH, configTier config.Tier, configSlot config.Slot, filterTag string) Deployments {
 	var deployments Deployments
 	for _, boshDeployments := range db {
-		for _, boshDeployment := range boshDeployments.Deployments {
+		keys := make([]string, 0)
+		for key := range boshDeployments.Deployments {
+			keys = append(keys, key)
+		}
+
+		sort.Strings(keys)
+		for _, key := range keys {
+			boshDeployment := boshDeployments.Deployments[key]
 			match := false
 			if configSlot.Filter.DeploymentNameRegexp != "" {
 				match, _ = regexp.MatchString(configSlot.Filter.DeploymentNameRegexp, boshDeployment.Name)
