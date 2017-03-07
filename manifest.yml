@@ -1,0 +1,9 @@
+---
+applications:
+- name: stannis
+  buildpack: go_buildpack
+  memory: 64M
+  env:
+    GOVERSION: go1.8
+    GOPACKAGENAME: stannis
+
