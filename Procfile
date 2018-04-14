@@ -1,2 +1,2 @@
-web: stannis webserver --config config/webserver.config.example.yml
+web: stannis webserver --config config.yml
 agent: stannis agent --config config/agent.config.example.yml
