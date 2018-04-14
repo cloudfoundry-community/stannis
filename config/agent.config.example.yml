@@ -1,8 +1,4 @@
 ---
-bosh_target: https://54.161.140.194:25555
-bosh_username: admin
-bosh_password: admin
-
-webserver_target: http://localhost:3000
+webserver_target: http://localhost:5000
 webserver_username: admin
 webserver_password: admin

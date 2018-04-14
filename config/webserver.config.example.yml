@@ -3,24 +3,20 @@ auth:
   username: admin
   password: admin
 pipelines:
-- name: Cloud Foundry
-  tag: cf
+- name: Redis
+  tag: redis
   filter:
-    using_bosh_releases: [cf]
-- name: RDPG
-  tag: rdpg
+    using_bosh_releases: [redis]
+- name: BPM
+  tag: bpm
   filter:
-    using_bosh_releases: [rdpg]
-- name: Logstash Service
-  tag: logstash-service
-  filter:
-    using_bosh_releases: [docker, logstash-docker]
+    using_bosh_releases: [bpm]
 tiers:
-  - name: try-anything
+  - name: local
     slots:
-      - name: bosh-lite
+      - name: warden-cpi
         filter:
-          deployment_name_regexp: try-anything
+          deployment_name_regexp: .*
   - name: dc
     slots:
       - name: sandbox
