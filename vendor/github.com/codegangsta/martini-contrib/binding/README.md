@@ -22,8 +22,6 @@ Your application (the final handler) will not even see the request if there are 
 
 It reads the Content-Type of the request to know how to deserialize it, or if the Content-Type is not specified, it tries different deserializers until one returns without errors.
 
-**Important safety tip:** Don't attempt to bind a pointer to a struct. This will cause a panic [to prevent a race condition](https://github.com/codegangsta/martini-contrib/pull/34#issuecomment-29683659) where every request would be pointing to the same struct.
-
 #### Form
 
 `binding.Form` deserializes form data from the request, whether in the query string or as a form-urlencoded payload, and puts the data into a struct you pass in. It then invokes the `binding.Validate` middleware to perform validation. No error handling is performed, but you can get the errors in your handler by receiving a `binding.Errors` type.
@@ -36,9 +34,9 @@ It reads the Content-Type of the request to know how to deserialize it, or if th
 
 #### Validate
 
-`binding.Validate` receives a populated struct and checks it for errors, first by enforcing the `binding:"required"` value on struct field tags, then by executing the `Validate()` method on the struct, if it is a `binding.Validator`. (See usage below for an example.)
+`binding.Validate` receives a populated struct and checks it for errors, first by enforcing the "required" attribute on struct field tags, then by executing the `Validate()` method on the struct, if it is a `binding.Validator`. (See usage below for an example.)
 
-*Note:* Marking a field as "required" means that you do not allow the zero value for that type (i.e. if you want to allow 0 in an int field, do not make it required).
+*Note:* The `required` attribute, which you can append to the end of a struct field tag, means that you do not allow the zero value for that type (i.e. if you want to allow 0 in an int field, do not make it required).
 
 
 #### ErrorHandler
@@ -55,32 +53,14 @@ This is a contrived example to show a few different ways to use the `binding` pa
 package main
 
 import (
-   "net/http"
-   
    "github.com/codegangsta/martini"
    "github.com/codegangsta/martini-contrib/binding"
  )
 
 type BlogPost struct {
-	Title   string    `form:"title" json:"title" binding:"required"`
-	Content string    `form:"content" json:"content"`
-	Views   int       `form:"views" json:"views"`
-	unexported string `form:"-"`  // skip binding of unexported fields
-}
-
-// This method implements binding.Validator and is executed by the binding.Validate middleware
-func (bp BlogPost) Validate(errors *binding.Errors, req *http.Request) {
-	if req.Header.Get("X-Custom-Thing") == "" {
-		errors.Overall["x-custom-thing"] = "The X-Custom-Thing header is required"
-	}
-	if len(bp.Title) < 4 {
-		errors.Fields["title"] = "Too short; minimum 4 characters"
-	} else if len(bp.Title) > 120 {
-		errors.Fields["title"] = "Too long; maximum 120 characters"
-	}
-	if bp.Views < 0 {
-		errors.Fields["views"] = "Views must be at least 0"
-	}
+	Title   string `form:"title" json:"title" required`
+	Content string `form:"content" json:"content"`
+	Views   int    `form:"views" json:"views"`
 }
 
 func main() {
@@ -91,8 +71,8 @@ func main() {
 		return blogpost.Title
 	})
 
-	m.Get("/blog", binding.Form(BlogPost{}), binding.ErrorHandler, func(blogpost BlogPost) string {
-		// This function won't execute if there were errors
+	m.Get("/blog", binding.Form(BlogPost{}), binding.ErrorHandler(), func(blogpost BlogPost) string {
+		// This function won't execute if there were errors because of the ErrorHandler middleware
 		return blogpost.Title
 	})
 
@@ -104,7 +84,7 @@ func main() {
 		return blogpost.Title
 	})
 
-	m.Post("/blog", binding.Json(BlogPost{}), myOwnErrorHandler, func(blogpost BlogPost) string {
+	m.Post("/blog", binding.Json(BlogPost{}), myOwnErrorHandler(), func(blogpost BlogPost) string {
 		// By this point, I assume that my own middleware took care of any errors
 		return blogpost.Title
 	})

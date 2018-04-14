@@ -13,6 +13,7 @@ import (
 	"github.com/codegangsta/cli"
 	"github.com/codegangsta/martini-contrib/auth"
 	"github.com/codegangsta/martini-contrib/binding"
+	"github.com/drnic/bosh-curl-api/boshcli"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/render"
 )
@@ -92,6 +93,8 @@ func runAgent(c *cli.Context) {
 	if err != nil {
 		log.Fatalln(err)
 	}
+	boshcli.Check()
+
 	fmt.Println(agentConfig)
 
 	agent.NewAgent(agentConfig).FetchAndUpload()
@@ -120,7 +123,7 @@ func runWebserver(c *cli.Context) {
 func main() {
 	app := cli.NewApp()
 	app.Name = "stannis"
-	app.Version = "0.4.0"
+	app.Version = "0.5.0"
 	app.Usage = "What deployments are running in which BOSH?"
 	app.Commands = []cli.Command{
 		{
