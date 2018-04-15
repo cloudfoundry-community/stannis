@@ -1,6 +1,7 @@
 package rendertemplates
 
 import (
+	"fmt"
 	"regexp"
 	"sort"
 
@@ -39,6 +40,7 @@ func PrepareRenderData(config *config.PipelinesConfig, db data.DeploymentsPerBOS
 func (renderdata *RenderData) DiscoverDeploymentsForSlot(db data.DeploymentsPerBOSH, configTier config.Tier, configSlot config.Slot, filterTag string) Deployments {
 	var deployments Deployments
 	for _, boshDeployments := range db {
+		fmt.Printf("BOSH deployments: %#v\n", boshDeployments)
 		keys := make([]string, 0)
 		for key := range boshDeployments.Deployments {
 			keys = append(keys, key)
@@ -60,6 +62,15 @@ func (renderdata *RenderData) DiscoverDeploymentsForSlot(db data.DeploymentsPerB
 			// TODO: also allow filter via TargetURI
 			if !match && configSlot.Filter.BoshUUID != "" {
 				if boshDeployments.UUID == configSlot.Filter.BoshUUID {
+					match = true
+					deployment := NewDeployment(configTier, configSlot, boshDeployment)
+					if deployment.ContainsFilterTag(filterTag) {
+						deployments = append(deployments, deployment)
+					}
+				}
+			}
+			if !match && configSlot.Filter.TargetName != "" {
+				if boshDeployments.Name == configSlot.Filter.TargetName {
 					match = true
 					deployment := NewDeployment(configTier, configSlot, boshDeployment)
 					if deployment.ContainsFilterTag(filterTag) {
