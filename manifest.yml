@@ -3,6 +3,7 @@ applications:
 - name: stannis
   buildpack: go_buildpack
   memory: 64M
+  stack: cflinuxfs3
   env:
     GOVERSION: go1.10
     GOPACKAGENAME: github.com/cloudfoundry-community/stannis
